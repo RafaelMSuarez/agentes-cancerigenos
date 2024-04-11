@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_ubb/pages/home_page/home_page.dart';
+import 'package:proyecto_ubb/pages/product_page/product_page.dart';
 
 class MainScaffold extends StatefulWidget {
   const MainScaffold({super.key});
@@ -17,7 +18,7 @@ class _MainScaffoldState extends State<MainScaffold> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       // appBar: AppBar(),
-      body: const HomePage(),
+      body: const ProductPage(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         tooltip: "Escanear",
@@ -25,6 +26,7 @@ class _MainScaffoldState extends State<MainScaffold> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomNavigationBar(
+        
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Inicio"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Perfil")
