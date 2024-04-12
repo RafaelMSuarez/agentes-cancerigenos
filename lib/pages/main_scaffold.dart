@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:proyecto_ubb/pages/agents_page/agents_page.dart';
 import 'package:proyecto_ubb/pages/home_page/home_page.dart';
 import 'package:proyecto_ubb/pages/product_page/product_page.dart';
+import 'package:proyecto_ubb/pages/profile_page/profile_page.dart';
+import 'package:proyecto_ubb/pages/search_page/search_page.dart';
 
 class MainScaffold extends StatefulWidget {
   const MainScaffold({super.key});
@@ -10,6 +14,8 @@ class MainScaffold extends StatefulWidget {
 }
 
 class _MainScaffoldState extends State<MainScaffold> {
+  int selectedIdex = 0;
+  PageController pageviewController = PageController();
   @override
   Widget build(BuildContext context) {
     // double alto = MediaQuery.of(context).size.height;
@@ -17,21 +23,32 @@ class _MainScaffoldState extends State<MainScaffold> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      // appBar: AppBar(),
-      body: const ProductPage(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        tooltip: "Escanear",
-        child: const Icon(Icons.camera),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomNavigationBar(
-        
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Inicio"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Perfil")
+      body: PageView(
+        controller: pageviewController,
+        physics: const NeverScrollableScrollPhysics(),
+        children: const [
+          HomePage(),
+          SearchPage(),
+          AgentsPage(),
+          ProfilePage()
         ],
-        onTap: (value) {},
+      ),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: selectedIdex,
+        destinations: const [
+          NavigationDestination(icon: Icon(Icons.home), label: "Inicio"),
+          NavigationDestination(icon: Icon(Icons.search), label: "Buscar"),
+          NavigationDestination(icon: Icon(Icons.lightbulb), label: "Agentes"),
+          NavigationDestination(icon: Icon(Icons.person), label: "Perfil"),
+        ],
+        onDestinationSelected: (value) {
+          setState(() {
+            selectedIdex = value;
+            pageviewController.jumpToPage(value);
+            // pageviewController.animateToPage(value,
+            //     duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
+          });
+        },
       ),
     );
   }

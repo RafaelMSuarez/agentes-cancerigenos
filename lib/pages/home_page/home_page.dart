@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:proyecto_ubb/pages/product_page/product_page.dart';
 import 'package:proyecto_ubb/style/padding_style.dart';
 import 'package:proyecto_ubb/style/text_styles.dart';
 
@@ -31,36 +34,69 @@ class _HomePageState extends State<HomePage> {
                       style: TitleTheme.mainTitle,
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 15),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        labelText: "Buscar producto",
-                        prefixIcon: Icon(Icons.search),
-                        contentPadding: EdgeInsets.zero,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(50),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     child: Container(
-                      height: alto * 0.2,
                       width: ancho,
+                      height: alto * 0.06,
                       decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(25),
-                        ),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(50)),
+                          border: Border.all(color: Colors.black54)),
+                      child: const Row(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            child: Icon(Icons.search, color: Colors.black54),
+                          ),
+                          Text(
+                            "Buscar producto",
+                            style:
+                                TextStyle(fontSize: 16, color: Colors.black87),
+                          ),
+                        ],
                       ),
-                      alignment: Alignment.centerLeft,
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text("Categorias de agentes cancerigenos"),
+                    ),
+                    // child: TextField(
+                    //   decoration: InputDecoration(
+                    //     labelText: "Buscar producto",
+                    //     prefixIcon: Icon(Icons.search),
+                    //     contentPadding: EdgeInsets.zero,
+                    //     border: OutlineInputBorder(
+                    //       borderRadius: BorderRadius.all(
+                    //         Radius.circular(50),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return const ProductPage();
+                            },
+                          ),
+                        );
+                      },
+                      child: Container(
+                        height: alto * 0.2,
+                        width: ancho,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(25),
+                          ),
+                        ),
+                        alignment: Alignment.centerLeft,
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text("Categorias de agentes cancerigenos"),
+                        ),
                       ),
                     ),
                   ),
