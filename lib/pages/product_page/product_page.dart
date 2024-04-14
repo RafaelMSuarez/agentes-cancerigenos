@@ -68,6 +68,7 @@ class _ProductPageState extends State<ProductPage> {
                         showModalBottomSheet(
                           context: context,
                           isScrollControlled: true,
+                          showDragHandle: true,
                           builder: (context) {
                             return const AgentPopUp();
                           },
@@ -85,7 +86,9 @@ class _ProductPageState extends State<ProductPage> {
           ),
           Expanded(
             child: Container(
-              color: Colors.red[100],
+              decoration: const BoxDecoration(
+                border: Border(top: BorderSide(color: Colors.black26))
+              ),
               alignment: Alignment.topLeft,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -12,15 +12,19 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: MainScaffold(),
+      home: const MainScaffold(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          brightness: Brightness.light,
-          seedColor: const Color(0xff4793AF),
-        ),
-      ),
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(
+            brightness: Brightness.light,
+            seedColor: const Color(0xff4793AF),
+          ),
+          pageTransitionsTheme: const PageTransitionsTheme(builders: {
+            TargetPlatform.android: ZoomPageTransitionsBuilder(
+              allowEnterRouteSnapshotting: false,
+            )
+          })),
     );
   }
 }
