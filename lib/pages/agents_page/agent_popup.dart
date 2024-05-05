@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:proyecto_ubb/style/text_styles.dart';
 
 class AgentPopUp extends StatefulWidget {
@@ -10,8 +9,6 @@ class AgentPopUp extends StatefulWidget {
 }
 
 class _AgentPopUpState extends State<AgentPopUp> {
-  final _controller = DraggableScrollableController();
-  final _sheet = GlobalKey();
 
   @override
   void initState() {

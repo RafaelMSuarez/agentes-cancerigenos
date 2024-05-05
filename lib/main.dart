@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:proyecto_ubb/pages/home_page/home_page.dart';
-import 'package:proyecto_ubb/pages/main_scaffold.dart';
+import 'package:proyecto_ubb/pages/wrapper.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MainApp());
 }
 
@@ -12,7 +12,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const MainScaffold(),
+      home: const Wrapper(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           useMaterial3: true,
