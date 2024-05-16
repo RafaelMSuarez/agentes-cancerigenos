@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_ubb/services/isar_service.dart';
 import 'package:proyecto_ubb/style/padding_style.dart';
 import 'package:proyecto_ubb/style/text_styles.dart';
 
 class ProfilePage extends StatefulWidget {
-  final String nombre;
-  const ProfilePage({super.key, required this.nombre});
+  const ProfilePage({super.key});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  // IsarService isar = IsarService();
+  // String nombre = "";
+
   @override
   Widget build(BuildContext context) {
     double alto = MediaQuery.of(context).size.height;
@@ -21,41 +24,72 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: EdgeInsets.only(top: alto * 0.05),
-              child: const Text(
-                "Cambiar nombre",
-                style: TitleTheme.mainTitle,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: Row(
-                children: [
-                  const Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.person),
-                        contentPadding: EdgeInsets.zero,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(50),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.check),
-                      iconSize: 40,
-                    ),
-                  )
-                ],
-              ),
-            ),
+            // Padding(
+            //   padding: EdgeInsets.only(top: alto * 0.05),
+            //   child: const Text(
+            //     "Cambiar nombre",
+            //     style: TitleTheme.mainTitle,
+            //   ),
+            // ),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(vertical: 20),
+            //   child: Form(
+            //     autovalidateMode: AutovalidateMode.onUserInteraction,
+            //     onChanged: () {
+            //       setState(() {
+            //         Form.of(primaryFocus!.context!).save();
+            //       });
+            //     },
+            //     child: Row(
+            //       children: [
+            //         Expanded(
+            //           child: TextFormField(
+            //             decoration: const InputDecoration(
+            //               hintText: "Nombre",
+            //               prefixIcon: Icon(Icons.person),
+            //               contentPadding: EdgeInsets.zero,
+            //               border: OutlineInputBorder(
+            //                 borderRadius: BorderRadius.all(
+            //                   Radius.circular(50),
+            //                 ),
+            //               ),
+            //             ),
+            //             textCapitalization: TextCapitalization.words,
+            //             onSaved: (newValue) {
+            //               if (newValue != null) {
+            //                 nombre = newValue;
+            //               }
+            //             },
+            //             validator: (value) {
+            //               return (value != null && value.isNotEmpty)
+            //                   ? null
+            //                   : "Debe ingresar un nombre";
+            //             },
+            //           ),
+            //         ),
+            //         Padding(
+            //           padding: const EdgeInsets.only(left: 10),
+            //           child: IconButton(
+            //             onPressed: () async {
+            //               nombre.isEmpty
+            //                   ? null
+            //                   : await isar.setName(nombre).then(
+            //                         (value) => ScaffoldMessenger.of(context)
+            //                             .showSnackBar(
+            //                           const SnackBar(
+            //                             content: Text("Nombre cambiado"),
+            //                           ),
+            //                         ),
+            //                       );
+            //             },
+            //             icon: const Icon(Icons.check),
+            //             iconSize: 40,
+            //           ),
+            //         )
+            //       ],
+            //     ),
+            //   ),
+            // ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 15),
               child: Container(

@@ -39,12 +39,12 @@ class _StartPageState extends State<StartPage> {
                       padding: EdgeInsets.symmetric(vertical: 50),
                       child: Text(
                         "Bienvenido a la aplicación",
-                        style: TitleTheme.mainTitle,
+                        style: TitleTextStyle.mainTitle,
                       ),
                     ),
                     const Text(
                       "Ingrese su nombre",
-                      style: TitleTheme.secondTitle,
+                      style: TitleTextStyle.secondTitle,
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(
@@ -104,7 +104,7 @@ class _StartPageState extends State<StartPage> {
                     padding: EdgeInsets.all(10),
                     child: Text(
                       "Continuar",
-                      style: TitleTheme.secondTitle,
+                      style: TitleTextStyle.secondTitle,
                     ),
                   ),
                 ),

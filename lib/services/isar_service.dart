@@ -23,7 +23,7 @@ class IsarService {
     return Future.value(Isar.getInstance());
   }
 
-  Future<User?> getName() async {
+  Future<User?> getUser() async {
     final isar = await db;
     final user = isar.users.where().findFirst();
 

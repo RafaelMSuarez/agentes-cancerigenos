@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_ubb/pages/home_page/widgets/product_card.dart';
 import 'package:proyecto_ubb/pages/product_page/product_page.dart';
 import 'package:proyecto_ubb/style/padding_style.dart';
 import 'package:proyecto_ubb/style/text_styles.dart';
 
 class HomePage extends StatefulWidget {
-  final String nombre;
-  const HomePage({super.key, required this.nombre});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -13,6 +13,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool checkbox = false;
+
   @override
   Widget build(BuildContext context) {
     double alto = MediaQuery.of(context).size.height;
@@ -25,9 +26,9 @@ class _HomePageState extends State<HomePage> {
           children: [
             Padding(
               padding: EdgeInsets.only(top: alto * 0.05),
-              child: Text(
-                "Bienvenido ${widget.nombre}",
-                style: TitleTheme.mainTitle,
+              child: const Text(
+                "Hola, busque un producto",
+                style: TitleTextStyle.mainTitle,
               ),
             ),
             Column(
@@ -83,20 +84,23 @@ class _HomePageState extends State<HomePage> {
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 15),
                 child: Material(
-                  borderRadius: const BorderRadius.all(Radius.circular(25)),
-                  clipBehavior: Clip.hardEdge,
+                  // borderRadius: const BorderRadius.all(Radius.circular(25)),
+                  // clipBehavior: Clip.hardEdge,
                   child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black26),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(25),
-                      ),
-                    ),
-                    child: ListView.builder(
-                      itemCount: 25,
+                    // decoration: BoxDecoration(
+                    //   border: Border.all(color: Colors.black26),
+                    //   borderRadius: const BorderRadius.all(
+                    //     Radius.circular(25),
+                    //   ),
+                    // ),
+                    child: ListView.separated(
+                      itemCount: 10,
+                      separatorBuilder: (context, index) {
+                        return const Divider(height: 0,);
+                      },
                       itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(index.toString()),
+                        return InkWell(
+                          child: ProductCard(nombre: index.toString()),
                           onTap: () {
                             Navigator.push(
                               context,

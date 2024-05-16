@@ -19,7 +19,7 @@ class _SearchPageState extends State<SearchPage> {
     double ancho = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.only(top: PaddingTheme.paddingDouble),
+        padding: const EdgeInsets.only(top: PaddingTheme.paddingDoubleHorizontal),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -109,10 +109,10 @@ class _SearchPageState extends State<SearchPage> {
             ),
             const Padding(
               padding: EdgeInsets.symmetric(
-                  vertical: 10, horizontal: PaddingTheme.paddingDouble),
+                  vertical: 10, horizontal: PaddingTheme.paddingDoubleHorizontal),
               child: Text(
                 "Categorías productos",
-                style: TitleTheme.secondTitle,
+                style: TitleTextStyle.secondTitle,
               ),
             ),
             Padding(

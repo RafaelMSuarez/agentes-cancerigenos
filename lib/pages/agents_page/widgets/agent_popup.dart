@@ -34,7 +34,7 @@ class _AgentPopUpState extends State<AgentPopUp> {
               padding: EdgeInsets.all(15.0),
               child: Text(
                 "Nombre Agente",
-                style: TitleTheme.mainTitle,
+                style: TitleTextStyle.mainTitle,
               ),
             ),
             SizedBox(

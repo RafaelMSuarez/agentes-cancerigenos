@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:proyecto_ubb/pages/agents_page/agent_popup.dart';
+import 'package:proyecto_ubb/pages/agents_page/widgets/agent_popup.dart';
 import 'package:proyecto_ubb/style/text_styles.dart';
 
 class ProductPage extends StatefulWidget {
@@ -37,7 +37,7 @@ class _ProductPageState extends State<ProductPage> {
                   padding: EdgeInsets.all(15.0),
                   child: Text(
                     "Nombre del producto",
-                    style: TitleTheme.secondTitle,
+                    style: TitleTextStyle.secondTitle,
                   ),
                 ),
               ],
@@ -47,7 +47,7 @@ class _ProductPageState extends State<ProductPage> {
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
             child: Text(
               "Posibles agentes cancerigenos",
-              style: TitleTheme.secondTitle,
+              style: TitleTextStyle.secondTitle,
             ),
           ),
           Padding(
@@ -97,7 +97,7 @@ class _ProductPageState extends State<ProductPage> {
                     padding: EdgeInsets.all(15),
                     child: Text(
                       "Ingredientes",
-                      style: TitleTheme.secondTitle,
+                      style: TitleTextStyle.secondTitle,
                     ),
                   ),
                   Expanded(
