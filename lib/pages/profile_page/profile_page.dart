@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:proyecto_ubb/services/isar_service.dart';
 import 'package:proyecto_ubb/style/padding_style.dart';
 import 'package:proyecto_ubb/style/text_styles.dart';
 

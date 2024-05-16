@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_ubb/pages/main_scaffold.dart';
-import 'package:proyecto_ubb/pages/wrapper.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

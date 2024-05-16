@@ -3,7 +3,6 @@ import 'package:proyecto_ubb/models/user_model.dart';
 import 'package:proyecto_ubb/pages/agents_page/agents_page.dart';
 import 'package:proyecto_ubb/pages/home_page/home_page.dart';
 import 'package:proyecto_ubb/pages/profile_page/profile_page.dart';
-import 'package:proyecto_ubb/services/isar_service.dart';
 
 class MainScaffold extends StatefulWidget {
   const MainScaffold({super.key});
