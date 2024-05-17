@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_ubb/pages/agents_page/widgets/agent_card.dart';
 import 'package:proyecto_ubb/pages/agents_page/widgets/agent_popup.dart';
 import 'package:proyecto_ubb/style/padding_style.dart';
 import 'package:proyecto_ubb/style/text_styles.dart';
@@ -22,112 +23,109 @@ class _AgentsPageState extends State<AgentsPage> {
 
   @override
   Widget build(BuildContext context) {
-    double alto = MediaQuery.of(context).size.height;
+    // double alto = MediaQuery.of(context).size.height;
     double ancho = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Padding(
-        padding:
-            const EdgeInsets.only(top: PaddingTheme.paddingDoubleHorizontal),
-        child: Padding(
-          padding: PaddingTheme.horizontal,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.symmetric(
-                    vertical: PaddingTheme.paddingDoubleVertical),
-                child: Text(
-                  "Categorías Agente Carcinógenos",
-                  style: TitleTextStyle.secondTitle,
-                ),
+        padding: const EdgeInsets.only(
+            top: PaddingTheme.paddingDoubleVertical,
+            left: PaddingTheme.paddingDoubleHorizontal,
+            right: PaddingTheme.paddingDoubleHorizontal),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Padding(
+              padding: EdgeInsets.symmetric(
+                  vertical: PaddingTheme.paddingDoubleVertical),
+              child: Text(
+                "Categorías Agente Carcinógenos",
+                style: TitleTextStyle.secondTitle,
               ),
-              Padding(
-                padding: PaddingTheme.vertical,
-                child: SizedBox(
-                  width: ancho,
-                  child: SegmentedButton(
-                    style: SegmentedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
+            ),
+            Padding(
+              padding: PaddingTheme.vertical,
+              child: SizedBox(
+                width: ancho,
+                child: SegmentedButton(
+                  style: SegmentedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    segments: const <ButtonSegment<int>>[
-                      ButtonSegment(value: 1, label: Text("Grupo 1")),
-                      ButtonSegment(value: 2, label: Text("Grupo 2A")),
-                      ButtonSegment(value: 3, label: Text("Grupo 2B")),
-                      ButtonSegment(value: 4, label: Text("Grupo 3")),
-                    ],
-                    selected: <int>{cat},
-                    showSelectedIcon: false,
-                    emptySelectionAllowed: true,
-                    onSelectionChanged: (set) {
-                      setState(() {
-                        cat = set.isEmpty ? 0 : set.first;
-                      });
-                    },
                   ),
+                  segments: const <ButtonSegment<int>>[
+                    ButtonSegment(value: 1, label: Text("Grupo 1")),
+                    ButtonSegment(value: 2, label: Text("Grupo 2A")),
+                    ButtonSegment(value: 3, label: Text("Grupo 2B")),
+                    ButtonSegment(value: 4, label: Text("Grupo 3")),
+                  ],
+                  selected: <int>{cat},
+                  showSelectedIcon: false,
+                  emptySelectionAllowed: true,
+                  onSelectionChanged: (set) {
+                    setState(() {
+                      cat = set.isEmpty ? 0 : set.first;
+                    });
+                  },
                 ),
               ),
-              Text(
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                  bottom: PaddingTheme.paddingDoubleVertical),
+              child: Text(
                 catDesc[cat],
                 style: const TextStyle(
                     fontStyle: FontStyle.italic,
                     fontWeight: FontWeight.bold,
                     fontSize: 16),
               ),
-              const Padding(
-                padding: PaddingTheme.vertical,
-                child: Column(
-                  children: [
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: "Buscar agente",
-                        prefixIcon: Icon(Icons.search),
-                        contentPadding: EdgeInsets.zero,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(50),
-                          ),
+            ),
+            const Padding(
+              padding: PaddingTheme.vertical,
+              child: Column(
+                children: [
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: "Buscar agente",
+                      prefixIcon: Icon(Icons.search),
+                      contentPadding: EdgeInsets.zero,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(50),
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              Expanded(
-                child: Material(
-                  borderRadius: const BorderRadius.all(Radius.circular(25)),
-                  clipBehavior: Clip.hardEdge,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black26),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(25),
+            ),
+            Expanded(
+              child: Material(
+                child: ListView.builder(
+                  itemCount: 10,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      child: AgentCard(
+                        titulo: "Agente: $index",
+                        informacionAdicional:
+                            index == 5 ? "informacion adicional" : null,
                       ),
-                    ),
-                    child: ListView.builder(
-                      itemCount: 25,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(index.toString()),
-                          onTap: () {
-                            showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              showDragHandle: true,
-                              builder: (context) {
-                                return const AgentPopUp();
-                              },
-                            );
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          showDragHandle: true,
+                          builder: (context) {
+                            return const AgentPopUp();
                           },
                         );
                       },
-                    ),
-                  ),
+                    );
+                  },
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

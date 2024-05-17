@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_ubb/style/padding_style.dart';
 import 'package:proyecto_ubb/style/text_styles.dart';
 
 class ProductCard extends StatelessWidget {
@@ -8,7 +9,7 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double alto = MediaQuery.of(context).size.height;
-    double ancho = MediaQuery.of(context).size.width;
+    // double ancho = MediaQuery.of(context).size.width;
 
     return SizedBox(
       height: alto * 0.12,
@@ -16,10 +17,9 @@ class ProductCard extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: alto * 0.04,
-            backgroundColor: Colors.red[100],
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            padding: PaddingTheme.all,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

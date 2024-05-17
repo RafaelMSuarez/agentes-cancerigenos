@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:proyecto_ubb/models/user_model.dart';
 import 'package:proyecto_ubb/pages/agents_page/agents_page.dart';
 import 'package:proyecto_ubb/pages/home_page/home_page.dart';
-import 'package:proyecto_ubb/pages/profile_page/profile_page.dart';
+import 'package:proyecto_ubb/pages/info_page/info_page.dart';
 
 class MainScaffold extends StatefulWidget {
   const MainScaffold({super.key});
@@ -14,14 +13,6 @@ class MainScaffold extends StatefulWidget {
 class _MainScaffoldState extends State<MainScaffold> {
   int selectedIdex = 0;
   PageController pageviewController = PageController();
-  // IsarService isar = IsarService();
-  // Future<User?>? user;
-
-  // @override
-  // void initState() {
-  //   user = isar.getUser();
-  //   super.initState();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +28,7 @@ class _MainScaffoldState extends State<MainScaffold> {
           HomePage(),
           // SearchPage(),
           AgentsPage(),
-          ProfilePage()
+          InfoPage()
         ],
       ),
       bottomNavigationBar: NavigationBar(
@@ -46,7 +37,7 @@ class _MainScaffoldState extends State<MainScaffold> {
           NavigationDestination(icon: Icon(Icons.home), label: "Inicio"),
           // NavigationDestination(icon: Icon(Icons.search), label: "Buscar"),
           NavigationDestination(icon: Icon(Icons.lightbulb), label: "Agentes"),
-          NavigationDestination(icon: Icon(Icons.person), label: "Perfil"),
+          NavigationDestination(icon: Icon(Icons.info), label: "Información"),
         ],
         onDestinationSelected: (value) {
           setState(() {
