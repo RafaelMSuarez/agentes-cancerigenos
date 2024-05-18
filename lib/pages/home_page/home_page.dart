@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_ubb/models/product_model.dart';
 import 'package:proyecto_ubb/pages/home_page/widgets/product_card.dart';
 import 'package:proyecto_ubb/pages/product_page/product_page.dart';
 import 'package:proyecto_ubb/style/padding_style.dart';
@@ -13,6 +14,15 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool checkbox = false;
+  ProductApi productApi = ProductApi();
+  List<Product> products = [];
+
+  @override
+  void initState() {
+    products = productApi.getProducts;
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +95,7 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.only(bottom: 15),
                 child: Material(
                   child: ListView.separated(
-                    itemCount: 10,
+                    itemCount: products.length,
                     separatorBuilder: (context, index) {
                       return const Divider(
                         height: 0,
@@ -93,13 +103,15 @@ class _HomePageState extends State<HomePage> {
                     },
                     itemBuilder: (context, index) {
                       return InkWell(
-                        child: ProductCard(nombre: index.toString()),
+                        child: ProductCard(product: products[index]),
                         onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                return const ProductPage();
+                                return ProductPage(
+                                  product: products[index],
+                                );
                               },
                             ),
                           );

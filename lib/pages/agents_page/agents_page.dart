@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_ubb/models/agent_model.dart';
 import 'package:proyecto_ubb/pages/agents_page/widgets/agent_card.dart';
 import 'package:proyecto_ubb/pages/agents_page/widgets/agent_popup.dart';
 import 'package:proyecto_ubb/style/padding_style.dart';
@@ -20,6 +21,15 @@ class _AgentsPageState extends State<AgentsPage> {
     "Posible carcinogénico para humanos",
     "No es carcinogénico para humanos"
   ];
+
+  AgentApi agentApi = AgentApi();
+  List<Agent> agents = [];
+
+  @override
+  void initState() {
+    agents = agentApi.getAgents;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,11 +57,11 @@ class _AgentsPageState extends State<AgentsPage> {
               child: SizedBox(
                 width: ancho,
                 child: SegmentedButton(
-                  style: SegmentedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
+                  // style: SegmentedButton.styleFrom(
+                  //   shape: RoundedRectangleBorder(
+                  //     borderRadius: BorderRadius.circular(10),
+                  //   ),
+                  // ),
                   segments: const <ButtonSegment<int>>[
                     ButtonSegment(value: 1, label: Text("Grupo 1")),
                     ButtonSegment(value: 2, label: Text("Grupo 2A")),
@@ -101,14 +111,15 @@ class _AgentsPageState extends State<AgentsPage> {
             ),
             Expanded(
               child: Material(
-                child: ListView.builder(
-                  itemCount: 10,
+                child: ListView.separated(
+                  itemCount: agents.length,
+                  separatorBuilder: (context, index) {
+                    return const Divider();
+                  },
                   itemBuilder: (context, index) {
                     return InkWell(
                       child: AgentCard(
-                        titulo: "Agente: $index",
-                        informacionAdicional:
-                            index == 5 ? "informacion adicional" : null,
+                        agent: agents[index],
                       ),
                       onTap: () {
                         showModalBottomSheet(
