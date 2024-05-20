@@ -20,3 +20,14 @@ abstract class CardTextStyle {
     fontWeight: FontWeight.w300,
   );
 }
+
+abstract class PopUpTextStyle {
+  static const TextStyle mainTitle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static const TextStyle secondTitle = TextStyle(
+    fontSize: 20,
+  );
+  static const TextStyle subtitle = TextStyle(
+    fontSize: 16,
+  );
+}

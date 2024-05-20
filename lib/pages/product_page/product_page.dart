@@ -68,7 +68,7 @@ class _ProductPageState extends State<ProductPage> {
             Padding(
               padding: PaddingTheme.all,
               child: Text(
-                "Posibles agentes cancerigenos (${widget.product.agents!.length})",
+                "Posibles agentes cancerigenos (${(widget.product.agents == null ? "0" : widget.product.agents!.length)})",
                 style: TitleTextStyle.secondTitle,
               ),
             ),
@@ -78,7 +78,7 @@ class _ProductPageState extends State<ProductPage> {
                   ? const Center(
                       child: Padding(
                         padding: PaddingTheme.all,
-                        child: Text("No contiene ningún agente carcinogénico"),
+                        child: Text("No contiene ningún agente carcinogénico :)", style: CardTextStyle.secondTitle,),
                       ),
                     )
                   : ListView.builder(
@@ -94,7 +94,10 @@ class _ProductPageState extends State<ProductPage> {
                               isScrollControlled: true,
                               showDragHandle: true,
                               builder: (context) {
-                                return const AgentPopUp();
+                                return AgentPopUp(
+                                  agent: agentApi.getAgentById(
+                                      widget.product.agents![index]),
+                                );
                               },
                             );
                           },

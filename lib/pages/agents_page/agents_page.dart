@@ -127,7 +127,7 @@ class _AgentsPageState extends State<AgentsPage> {
                           isScrollControlled: true,
                           showDragHandle: true,
                           builder: (context) {
-                            return const AgentPopUp();
+                            return AgentPopUp(agent: agents[index],);
                           },
                         );
                       },
