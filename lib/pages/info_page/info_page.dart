@@ -79,6 +79,24 @@ class _InfoPageState extends State<InfoPage> {
               const Divider(
                 height: PaddingTheme.paddingDoubleVertical,
               ),
+              const Text(
+                "Descripción de agentes:",
+                style: TitleTextStyle.secondTitle,
+              ),
+              const ListTile(
+                title: Text("Volumen de publicación"),
+                subtitle: Text("Número de volumen publicado por IARC donde se describe el agente"),
+              ),
+              const ListTile(
+                title: Text("Año de publicación"),
+                subtitle: Text(
+                    "Año de último volumen publicado por IARC donde se describe el agente"),
+              ),
+              const ListTile(
+                title: Text("Año de evaluación"),
+                subtitle: Text(
+                    "Año en que el equipo de evaluación de IARC evaluó el agente"),
+              ),
               const Padding(
                 padding: PaddingTheme.vertical,
                 child: Text(

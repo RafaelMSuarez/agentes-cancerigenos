@@ -33,11 +33,21 @@ class ProductApi {
       ingr: ["Carne de cerdo"],
       agents: [1],
     ),
-    Product(
-        id: 2,
-        name: "Cola-Cola 2 Litros",
-        ingr: ["Azucar", "Cilantro", "Cola", "Cafeína"],
-        agents: [2]),
+    Product(id: 2, name: "Coca-Cola 2 Litros Sin Ázucar", ingr: [
+      "Agua carbonatada",
+      "Color caramelo",
+      "Ácido Fosfórico",
+      "Aspartamo",
+      "Saborizantes naturales",
+      "Benzoato se Sodio",
+      "Acesulfamo de Potasio",
+      "Citrato de Sodio",
+      "Cafeína",
+      "Fenilalanina",
+    ], agents: [
+      5,
+      2,
+    ]),
     Product(
       id: 3,
       name: "Pechuga de Pollo",

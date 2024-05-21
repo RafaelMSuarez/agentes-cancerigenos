@@ -4,6 +4,7 @@ abstract class TitleTextStyle {
   static const TextStyle mainTitle = TextStyle(
     fontSize: 25,
   );
+
   static const TextStyle secondTitle = TextStyle(
     fontSize: 20,
   );
@@ -14,6 +15,7 @@ abstract class CardTextStyle {
     fontSize: 20,
     fontWeight: FontWeight.bold,
   );
+
   static const TextStyle secondTitle = TextStyle(
     fontSize: 16,
     fontStyle: FontStyle.italic,
@@ -22,12 +24,18 @@ abstract class CardTextStyle {
 }
 
 abstract class PopUpTextStyle {
-  static const TextStyle mainTitle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static const TextStyle mainTitle = TextStyle(
+    fontSize: 30,
+    fontWeight: FontWeight.bold,
+  );
+
   static const TextStyle secondTitle = TextStyle(
     fontSize: 20,
   );
+
   static const TextStyle subtitle = TextStyle(
     fontSize: 16,
+    fontWeight: FontWeight.w300,
+    fontStyle: FontStyle.italic,
   );
 }

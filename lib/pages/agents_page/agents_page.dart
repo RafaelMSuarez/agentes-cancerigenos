@@ -33,7 +33,7 @@ class _AgentsPageState extends State<AgentsPage> {
 
   @override
   Widget build(BuildContext context) {
-    // double alto = MediaQuery.of(context).size.height;
+    double alto = MediaQuery.of(context).size.height;
     double ancho = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Padding(
@@ -109,6 +109,10 @@ class _AgentsPageState extends State<AgentsPage> {
                 ],
               ),
             ),
+            Divider(
+              height: alto * 0.03,
+              // height: 20,
+            ),
             Expanded(
               child: Material(
                 child: ListView.separated(
@@ -127,7 +131,9 @@ class _AgentsPageState extends State<AgentsPage> {
                           isScrollControlled: true,
                           showDragHandle: true,
                           builder: (context) {
-                            return AgentPopUp(agent: agents[index],);
+                            return AgentPopUp(
+                              agent: agents[index],
+                            );
                           },
                         );
                       },

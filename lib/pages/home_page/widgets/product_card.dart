@@ -30,27 +30,29 @@ class ProductCard extends StatelessWidget {
           CircleAvatar(
             radius: alto * 0.04,
           ),
-          Padding(
-            padding: PaddingTheme.all,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  product.name,
-                  style: CardTextStyle.mainTitle,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Text(
-                    elementos(),
-                    style: CardTextStyle.secondTitle,
+          Expanded(
+            child: Padding(
+              padding: PaddingTheme.all,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    product.name,
+                    style: CardTextStyle.mainTitle,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                )
-              ],
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Text(
+                      elementos(),
+                      style: CardTextStyle.secondTitle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  )
+                ],
+              ),
             ),
           )
         ],

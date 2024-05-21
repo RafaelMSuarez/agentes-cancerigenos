@@ -13,13 +13,28 @@ class AgentPopUp extends StatelessWidget {
     String getGroup() {
       switch (agent.group) {
         case 1:
-          return "1";
+          return "Grupo 1";
         case 2:
-          return "2A";
+          return "Grupo 2A";
         case 3:
-          return "2B";
+          return "Grupo 2B";
         case 4:
-          return "3";
+          return "Grupo 3";
+        default:
+          return "";
+      }
+    }
+
+    String getGroupInfo() {
+      switch (agent.group) {
+        case 1:
+          return "Carcinogénico para los humanos";
+        case 2:
+          return "Probablemente carcinogénico para humanos";
+        case 3:
+          return "Posiblemente carcinogénico para humanos";
+        case 4:
+          return "No es carcinogénico para humanos";
         default:
           return "";
       }
@@ -32,72 +47,59 @@ class AgentPopUp extends StatelessWidget {
       child: SingleChildScrollView(
         child: Center(
           child: Padding(
-            padding: PaddingTheme.all,
+            padding: PaddingTheme.horizontal,
             child: SizedBox(
               width: ancho,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ListTile(
-                    title: Text(
-                      agent.agent,
-                      style: PopUpTextStyle.mainTitle,
-                    ),
+                    title: Text(agent.agent),
+                    titleTextStyle: PopUpTextStyle.mainTitle,
                   ),
                   ListTile(
-                    title: const Text(
-                      "Grupo:",
-                      style: PopUpTextStyle.secondTitle,
-                    ),
-                    subtitle: Text(getGroup()),
+                    title: Text(getGroup()),
+                    titleTextStyle: PopUpTextStyle.secondTitle,
+                    subtitle: Text(getGroupInfo()),
+                    subtitleTextStyle: PopUpTextStyle.subtitle,
                   ),
                   ListTile(
-                    title: const Text(
-                      "Volumen de publicación:",
-                      style: PopUpTextStyle.secondTitle,
-                    ),
-                    subtitle: Text(
-                      agent.volumen == null
-                          ? "Sin información"
-                          : agent.volumen!,
-                      style: PopUpTextStyle.subtitle,
-                    ),
+                    title: const Text("Volumen de publicación:"),
+                    titleTextStyle: PopUpTextStyle.secondTitle,
+                    subtitle: Text(agent.volumen == null
+                        ? "Sin información"
+                        : agent.volumen!),
+                    subtitleTextStyle: PopUpTextStyle.subtitle,
                   ),
                   ListTile(
-                    title: const Text(
-                      "Año de publicación:",
-                      style: PopUpTextStyle.secondTitle,
-                    ),
+                    title: const Text("Año de publicación:"),
+                    titleTextStyle: PopUpTextStyle.secondTitle,
                     subtitle: Text(
                       agent.yearPub == null
                           ? "Sin información"
                           : agent.yearPub.toString(),
-                      style: PopUpTextStyle.subtitle,
                     ),
+                    subtitleTextStyle: PopUpTextStyle.subtitle,
                   ),
                   ListTile(
-                    title: const Text(
-                      "Año de evaluación:",
-                      style: PopUpTextStyle.secondTitle,
-                    ),
+                    title: const Text("Año de evaluación:"),
+                    titleTextStyle: PopUpTextStyle.secondTitle,
                     subtitle: Text(
                       agent.yearEv == null
                           ? "Sin información"
                           : agent.yearEv.toString(),
-                      style: PopUpTextStyle.subtitle,
                     ),
+                    subtitleTextStyle: PopUpTextStyle.subtitle,
                   ),
                   ListTile(
-                    title: const Text(
-                      "Información adicional:",
-                      style: PopUpTextStyle.secondTitle,
-                    ),
+                    title: const Text("Información adicional:"),
+                    titleTextStyle: PopUpTextStyle.secondTitle,
                     subtitle: Text(
                       agent.addInfo == null
                           ? "Sin información"
                           : agent.addInfo!,
-                      style: PopUpTextStyle.subtitle,
                     ),
+                    subtitleTextStyle: PopUpTextStyle.subtitle,
                   ),
                 ],
               ),
