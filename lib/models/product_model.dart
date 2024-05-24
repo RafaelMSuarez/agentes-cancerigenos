@@ -47,12 +47,45 @@ class ProductApi {
     ], agents: [
       5,
       2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      
     ]),
     Product(
       id: 3,
       name: "Pechuga de Pollo",
       ingr: ["Carne de pollo"],
-    )
+    ),
+    Product(
+      id: 4,
+      name: "Pechuga de Pollo",
+      ingr: ["Carne de pollo"],
+    ),
+    Product(
+      id: 5,
+      name: "Pechuga de Pollo",
+      ingr: ["Carne de pollo"],
+    ),
+    Product(
+      id: 6,
+      name: "Pechuga de Pollo",
+      ingr: ["Carne de pollo"],
+    ),
+    Product(
+      id: 7,
+      name: "Pechuga de Pollo",
+      ingr: ["Carne de pollo"],
+    ),
+    Product(
+      id: 8,
+      name: "Pechuga de Pollo",
+      ingr: ["Carne de pollo"],
+    ),
   ];
 
   List<Product> get getProducts => products;

@@ -20,6 +20,13 @@ class MainApp extends StatelessWidget {
           seedColor: Colors.white,
           brightness: Brightness.dark,
         ),
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: {
+            TargetPlatform.android: ZoomPageTransitionsBuilder(
+              allowEnterRouteSnapshotting: false,
+            )
+          },
+        ),
       ),
       theme: ThemeData(
         useMaterial3: true,

@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:proyecto_ubb/models/agent_model.dart';
 import 'package:proyecto_ubb/models/product_model.dart';
 import 'package:proyecto_ubb/pages/agents_page/widgets/agent_popup.dart';
@@ -37,87 +39,134 @@ class _ProductPageState extends State<ProductPage> {
     double ancho = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SafeArea(
-          child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: ancho,
-              height: alto * 0.2,
-              color: Theme.of(context).colorScheme.surfaceVariant,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: const Icon(Icons.arrow_back),
+          child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: ancho,
+            height: alto * 0.2,
+            color: Theme.of(context).colorScheme.surfaceVariant,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(Icons.arrow_back),
+                ),
+                Padding(
+                  padding: PaddingTheme.all,
+                  child: Text(
+                    widget.product.name,
+                    style: TitleTextStyle.secondTitle,
                   ),
-                  Padding(
-                    padding: PaddingTheme.all,
-                    child: Text(
-                      widget.product.name,
-                      style: TitleTextStyle.secondTitle,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-            Padding(
-              padding: PaddingTheme.all,
-              child: Text(
-                "Posibles agentes cancerigenos (${(widget.product.agents == null ? "0" : widget.product.agents!.length)})",
-                style: TitleTextStyle.secondTitle,
-              ),
+          ),
+          Padding(
+            padding: PaddingTheme.all,
+            child: Text(
+              "Posibles agentes carcinogénicos (${(widget.product.agents == null ? "0" : widget.product.agents!.length)})",
+              style: TitleTextStyle.secondTitle,
             ),
-            Padding(
+          ),
+          SizedBox(
+            height: alto * 0.16,
+            child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: widget.product.agents == null
                   ? const Center(
                       child: Padding(
                         padding: PaddingTheme.all,
-                        child: Text("No contiene ningún agente carcinogénico :)", style: CardTextStyle.secondTitle,),
+                        child: Text(
+                          "No contiene ningún agente carcinogénico :)",
+                          style: CardTextStyle.secondTitle,
+                        ),
                       ),
                     )
                   : ListView.builder(
+                      scrollDirection: Axis.horizontal,
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       shrinkWrap: true,
                       itemCount: widget.product.agents!.length,
-                      physics: const NeverScrollableScrollPhysics(),
+                      // physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
-                        return ListTile(
-                          onTap: () {
-                            showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              showDragHandle: true,
-                              builder: (context) {
-                                return AgentPopUp(
-                                  agent: agentApi.getAgentById(
-                                      widget.product.agents![index]),
-                                );
-                              },
-                            );
-                          },
-                          leading: CircleAvatar(
-                            child: Text(
-                              getGroup(widget.product.agents![index]),
-                            ),
-                          ),
-                          title: Text(
-                            agentApi
-                                .getAgentById(widget.product.agents![index])
-                                .agent,
-                            style: CardTextStyle.mainTitle,
+                        return SizedBox(
+                          // color: Colors.red,
+                          width: ancho * 0.32,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    showDragHandle: true,
+                                    builder: (context) {
+                                      return AgentPopUp(
+                                        agent: agentApi.getAgentById(
+                                            widget.product.agents![index]),
+                                      );
+                                    },
+                                  );
+                                },
+                                customBorder: const CircleBorder(),
+                                child: CircleAvatar(
+                                  radius: ancho * 0.09,
+                                  child: Text(
+                                    getGroup(widget.product.agents![index]),
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                agentApi
+                                    .getAgentById(widget.product.agents![index])
+                                    .agent,
+                                style: CardTextStyle.mainTitle,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
                           ),
                         );
+                        // return ListTile(
+                        //   onTap: () {
+                        //     showModalBottomSheet(
+                        //       context: context,
+                        //       isScrollControlled: true,
+                        //       showDragHandle: true,
+                        //       builder: (context) {
+                        //         return AgentPopUp(
+                        //           agent: agentApi.getAgentById(
+                        //               widget.product.agents![index]),
+                        //         );
+                        //       },
+                        //     );
+                        //   },
+                        //   leading: CircleAvatar(
+                        //     child: Text(
+                        //       getGroup(widget.product.agents![index]),
+                        //     ),
+                        //   ),
+                        //   title: Text(
+                        //     agentApi
+                        //         .getAgentById(widget.product.agents![index])
+                        //         .agent,
+                        //     style: CardTextStyle.mainTitle,
+                        //   ),
+                        // );
                       },
                     ),
             ),
-            const Divider(),
-            Container(
+          ),
+          const Divider(),
+          Expanded(
+            flex: 3,
+            child: Container(
               alignment: Alignment.topLeft,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,28 +178,32 @@ class _ProductPageState extends State<ProductPage> {
                       style: TitleTextStyle.secondTitle,
                     ),
                   ),
-                  Padding(
-                    padding: PaddingTheme.all,
-                    child: ListView.separated(
-                      shrinkWrap: true,
-                      itemCount: widget.product.ingr.length,
-                      physics: const NeverScrollableScrollPhysics(),
-                      separatorBuilder: (context, index) {
-                        return SizedBox(height: alto * 0.02);
-                      },
-                      itemBuilder: (context, index) {
-                        return Text(
-                          widget.product.ingr[index],
-                          style: CardTextStyle.mainTitle,
-                        );
-                      },
+                  Expanded(
+                    child: Padding(
+                      padding: PaddingTheme.all,
+                      child: Scrollbar(
+                        child: ListView.separated(
+                          shrinkWrap: true,
+                          itemCount: widget.product.ingr.length,
+                          // physics: const NeverScrollableScrollPhysics(),
+                          separatorBuilder: (context, index) {
+                            return SizedBox(height: alto * 0.02);
+                          },
+                          itemBuilder: (context, index) {
+                            return Text(
+                              widget.product.ingr[index],
+                              style: const TextStyle(fontSize: 16),
+                            );
+                          },
+                        ),
+                      ),
                     ),
                   ),
                 ],
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       )),
     );
   }

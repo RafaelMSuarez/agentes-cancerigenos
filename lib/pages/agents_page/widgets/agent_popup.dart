@@ -64,6 +64,16 @@ class AgentPopUp extends StatelessWidget {
                     subtitleTextStyle: PopUpTextStyle.subtitle,
                   ),
                   ListTile(
+                    title: const Text("Información:"),
+                    titleTextStyle: PopUpTextStyle.secondTitle,
+                    subtitle: Text(
+                      agent.addInfo == null
+                          ? "Sin información"
+                          : agent.addInfo!,
+                    ),
+                    subtitleTextStyle: PopUpTextStyle.subtitle,
+                  ),
+                  ListTile(
                     title: const Text("Volumen de publicación:"),
                     titleTextStyle: PopUpTextStyle.secondTitle,
                     subtitle: Text(agent.volumen == null
@@ -88,16 +98,6 @@ class AgentPopUp extends StatelessWidget {
                       agent.yearEv == null
                           ? "Sin información"
                           : agent.yearEv.toString(),
-                    ),
-                    subtitleTextStyle: PopUpTextStyle.subtitle,
-                  ),
-                  ListTile(
-                    title: const Text("Información adicional:"),
-                    titleTextStyle: PopUpTextStyle.secondTitle,
-                    subtitle: Text(
-                      agent.addInfo == null
-                          ? "Sin información"
-                          : agent.addInfo!,
                     ),
                     subtitleTextStyle: PopUpTextStyle.subtitle,
                   ),

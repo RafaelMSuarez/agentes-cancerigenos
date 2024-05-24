@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:proyecto_ubb/style/padding_style.dart';
 import 'package:proyecto_ubb/style/text_styles.dart';
 
@@ -25,6 +26,74 @@ class _InfoPageState extends State<InfoPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              const Padding(
+                padding: PaddingTheme.vertical,
+                child: Text(
+                  "Agentes carcinogénicos",
+                  style: TitleTextStyle.mainTitle,
+                ),
+              ),
+              const ExpansionTile(
+                expandedAlignment: Alignment.centerLeft,
+                childrenPadding: PaddingTheme.all,
+                title: Text("¿Qué es un agente carcinogénico?"),
+                children: <Text>[
+                  Text("Descripción según IARC"),
+                ],
+              ),
+              const ExpansionTile(
+                title: Text("Elementos de descripción:"),
+                expandedAlignment: Alignment.centerLeft,
+                childrenPadding: PaddingTheme.all,
+                children: [
+                  Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: "Volumen de publicación: ",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(
+                          text:
+                              "Número de volumen publicado por IARC donde se describe el agente.",
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: PaddingTheme.vertical,
+                    child: Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: "Año de publicación: ",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          TextSpan(
+                            text:
+                                "Año de último volumen publicado por IARC donde se describe el agente.",
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: "Año de evaluación: ",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(
+                          text:
+                              "Año en que el equipo de evaluación de IARC evaluó el agente.",
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const Divider(),
               const Padding(
                 padding: PaddingTheme.vertical,
                 child: Text(
@@ -78,24 +147,6 @@ class _InfoPageState extends State<InfoPage> {
               ),
               const Divider(
                 height: PaddingTheme.paddingDoubleVertical,
-              ),
-              const Text(
-                "Descripción de agentes:",
-                style: TitleTextStyle.secondTitle,
-              ),
-              const ListTile(
-                title: Text("Volumen de publicación"),
-                subtitle: Text("Número de volumen publicado por IARC donde se describe el agente"),
-              ),
-              const ListTile(
-                title: Text("Año de publicación"),
-                subtitle: Text(
-                    "Año de último volumen publicado por IARC donde se describe el agente"),
-              ),
-              const ListTile(
-                title: Text("Año de evaluación"),
-                subtitle: Text(
-                    "Año en que el equipo de evaluación de IARC evaluó el agente"),
               ),
               const Padding(
                 padding: PaddingTheme.vertical,

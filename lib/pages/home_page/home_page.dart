@@ -90,10 +90,12 @@ class _HomePageState extends State<HomePage> {
                 )
               ],
             ),
+            SizedBox(
+              height: alto * 0.02,
+            ),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 15),
-                child: Material(
+              child: Material(
+                child: Scrollbar(
                   child: ListView.separated(
                     itemCount: products.length,
                     separatorBuilder: (context, index) {

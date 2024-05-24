@@ -31,6 +31,21 @@ class _AgentsPageState extends State<AgentsPage> {
     super.initState();
   }
 
+  List<Agent> agentSort() {
+    switch (cat) {
+      case 1:
+        return agents.where((element) => element.group == 1).toList();
+      case 2:
+        return agents.where((element) => element.group == 2).toList();
+      case 3:
+        return agents.where((element) => element.group == 3).toList();
+      case 4:
+        return agents.where((element) => element.group == 4).toList();
+      default:
+        return agents;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double alto = MediaQuery.of(context).size.height;
@@ -48,8 +63,27 @@ class _AgentsPageState extends State<AgentsPage> {
               padding: EdgeInsets.symmetric(
                   vertical: PaddingTheme.paddingDoubleVertical),
               child: Text(
-                "Categorías Agente Carcinógenos",
-                style: TitleTextStyle.secondTitle,
+                "Busque un agente",
+                style: TitleTextStyle.mainTitle,
+              ),
+            ),
+            const Padding(
+              padding: PaddingTheme.vertical,
+              child: Column(
+                children: [
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: "Buscar agente",
+                      prefixIcon: Icon(Icons.search),
+                      contentPadding: EdgeInsets.zero,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(50),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             Padding(
@@ -84,61 +118,41 @@ class _AgentsPageState extends State<AgentsPage> {
                   bottom: PaddingTheme.paddingDoubleVertical),
               child: Text(
                 catDesc[cat],
-                style: const TextStyle(
-                    fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16),
+                style:
+                    const TextStyle(fontStyle: FontStyle.italic, fontSize: 16),
               ),
             ),
-            const Padding(
-              padding: PaddingTheme.vertical,
-              child: Column(
-                children: [
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: "Buscar agente",
-                      prefixIcon: Icon(Icons.search),
-                      contentPadding: EdgeInsets.zero,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(50),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Divider(
-              height: alto * 0.03,
-              // height: 20,
-            ),
+            SizedBox(height: alto * 0.02,),
             Expanded(
               child: Material(
-                child: ListView.separated(
-                  itemCount: agents.length,
-                  separatorBuilder: (context, index) {
-                    return const Divider();
-                  },
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      child: AgentCard(
-                        agent: agents[index],
-                      ),
-                      onTap: () {
-                        showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          showDragHandle: true,
-                          builder: (context) {
-                            return AgentPopUp(
-                              agent: agents[index],
-                            );
-                          },
-                        );
-                      },
-                    );
-                  },
+                child: Scrollbar(
+                  child: ListView.separated(
+                    itemCount: agentSort().length,
+                    padding: const EdgeInsets.only(
+                        bottom: PaddingTheme.paddingDoubleVertical),
+                    separatorBuilder: (context, index) {
+                      return const Divider();
+                    },
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        child: AgentCard(
+                          agent: agentSort()[index],
+                        ),
+                        onTap: () {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            showDragHandle: true,
+                            builder: (context) {
+                              return AgentPopUp(
+                                agent: agentSort()[index],
+                              );
+                            },
+                          );
+                        },
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
