@@ -17,7 +17,7 @@ class MainApp extends StatelessWidget {
       darkTheme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.white,
+          seedColor: Colors.blue,
           brightness: Brightness.dark,
         ),
         pageTransitionsTheme: const PageTransitionsTheme(
@@ -32,7 +32,7 @@ class MainApp extends StatelessWidget {
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
           brightness: Brightness.light,
-          seedColor: const Color(0xffA91D3A),
+          seedColor: Colors.blueGrey,
         ),
         pageTransitionsTheme: const PageTransitionsTheme(
           builders: {

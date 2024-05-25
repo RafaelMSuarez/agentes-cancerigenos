@@ -24,17 +24,21 @@ class ProductCard extends StatelessWidget {
     }
 
     return SizedBox(
-      height: alto * 0.12,
+      height: alto * 0.11,
       child: Row(
         children: [
           CircleAvatar(
             radius: alto * 0.04,
+            backgroundImage: product.imgSource == null
+                ? null
+                : AssetImage(product.imgSource!),
           ),
           Expanded(
             child: Padding(
               padding: PaddingTheme.all,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     product.name,

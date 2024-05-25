@@ -11,11 +11,15 @@ class Product {
   // Lista agentes
   final List<int>? agents;
 
+  // Imagen
+  final String? imgSource;
+
   Product({
     required this.id,
     required this.name,
     required this.ingr,
     this.agents,
+    this.imgSource,
   });
 }
 
@@ -26,55 +30,65 @@ class ProductApi {
       name: "Carne de vacuno",
       ingr: ["Carne de vacuno"],
       agents: [0],
+      imgSource: "assets/carne.jpg",
     ),
     Product(
-      id: 1,
-      name: "Jamón",
-      ingr: ["Carne de cerdo"],
-      agents: [1],
+        id: 1,
+        name: "Jamón",
+        ingr: ["Carne de cerdo"],
+        agents: [1],
+        imgSource: "assets/jamon.png"),
+    Product(
+      id: 2,
+      name: "Coca-Cola 2.5L Sin Ázucar",
+      ingr: [
+        "Agua carbonatada",
+        "Color caramelo",
+        "Ácido Fosfórico",
+        "Aspartamo",
+        "Saborizantes naturales",
+        "Benzoato se Sodio",
+        "Acesulfamo de Potasio",
+        "Citrato de Sodio",
+        "Cafeína",
+        "Fenilalanina",
+      ],
+      agents: [
+        5,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+      ],
+      imgSource: "assets/coca.png",
     ),
-    Product(id: 2, name: "Coca-Cola 2 Litros Sin Ázucar", ingr: [
-      "Agua carbonatada",
-      "Color caramelo",
-      "Ácido Fosfórico",
-      "Aspartamo",
-      "Saborizantes naturales",
-      "Benzoato se Sodio",
-      "Acesulfamo de Potasio",
-      "Citrato de Sodio",
-      "Cafeína",
-      "Fenilalanina",
-    ], agents: [
-      5,
-      2,
-      2,
-      2,
-      2,
-      2,
-      2,
-      2,
-      2,
-      
-    ]),
     Product(
       id: 3,
       name: "Pechuga de Pollo",
       ingr: ["Carne de pollo"],
+      imgSource: "assets/pollo.webp",
     ),
     Product(
       id: 4,
       name: "Pechuga de Pollo",
       ingr: ["Carne de pollo"],
+      imgSource: "assets/pollo.webp",
     ),
     Product(
       id: 5,
       name: "Pechuga de Pollo",
       ingr: ["Carne de pollo"],
+      imgSource: "assets/pollo.webp",
     ),
     Product(
       id: 6,
       name: "Pechuga de Pollo",
       ingr: ["Carne de pollo"],
+      imgSource: "assets/pollo.webp",
     ),
     Product(
       id: 7,

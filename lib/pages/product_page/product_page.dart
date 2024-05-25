@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:proyecto_ubb/models/agent_model.dart';
 import 'package:proyecto_ubb/models/product_model.dart';
 import 'package:proyecto_ubb/pages/agents_page/widgets/agent_popup.dart';
@@ -38,6 +36,7 @@ class _ProductPageState extends State<ProductPage> {
     double alto = MediaQuery.of(context).size.height;
     double ancho = MediaQuery.of(context).size.width;
     return Scaffold(
+      appBar: AppBar(),
       body: SafeArea(
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,22 +44,45 @@ class _ProductPageState extends State<ProductPage> {
           Container(
             width: ancho,
             height: alto * 0.2,
-            color: Theme.of(context).colorScheme.surfaceVariant,
+            decoration: widget.product.imgSource == null
+                ? null
+                : BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage(widget.product.imgSource!),
+                        fit: BoxFit.cover),
+                  ),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: const Icon(Icons.arrow_back),
-                ),
-                Padding(
-                  padding: PaddingTheme.all,
-                  child: Text(
-                    widget.product.name,
-                    style: TitleTextStyle.secondTitle,
+                // IconButton(
+                //   onPressed: () {
+                //     Navigator.pop(context);
+                //   },
+                //   icon: const Icon(Icons.arrow_back),
+                // ),
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.transparent,
+                        Colors.black.withOpacity(0.8),
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                  ),
+                  height: alto * 0.1,
+                  width: ancho,
+                  alignment: Alignment.bottomLeft,
+                  child: Padding(
+                    padding: PaddingTheme.all,
+                    child: Text(
+                      widget.product.name,
+                      style: TitleTextStyle.secondTitle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ),
               ],
