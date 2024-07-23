@@ -3,7 +3,6 @@ import 'package:proyecto_ubb/models/product_model.dart';
 import 'package:proyecto_ubb/pages/home_page/widgets/product_card.dart';
 import 'package:proyecto_ubb/pages/product_page/product_page.dart';
 import 'package:proyecto_ubb/style/padding_style.dart';
-import 'package:proyecto_ubb/style/text_styles.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,6 +15,8 @@ class _HomePageState extends State<HomePage> {
   bool checkbox = false;
   ProductApi productApi = ProductApi();
   List<Product> products = [];
+
+  bool presente = true;
 
   @override
   void initState() {
@@ -62,7 +63,11 @@ class _HomePageState extends State<HomePage> {
               Padding(
                 padding: const EdgeInsets.only(left: 10),
                 child: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      presente = !presente;
+                    });
+                  },
                   icon: const Icon(Icons.camera_alt),
                   iconSize: 40,
                 ),
@@ -87,31 +92,35 @@ class _HomePageState extends State<HomePage> {
           ),
           Expanded(
             child: Scrollbar(
-              child: ListView.separated(
-                itemCount: products.length,
-                separatorBuilder: (context, index) {
-                  return const Divider(
-                    height: 0,
-                  );
-                },
-                itemBuilder: (context, index) {
-                  return InkWell(
-                    child: ProductCard(product: products[index]),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return ProductPage(
-                              product: products[index],
+              child: presente
+                  ? ListView.separated(
+                      itemCount: products.length,
+                      separatorBuilder: (context, index) {
+                        return const Divider(
+                          height: 0,
+                        );
+                      },
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          child: ProductCard(product: products[index]),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return ProductPage(
+                                    product: products[index],
+                                  );
+                                },
+                              ),
                             );
                           },
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
+                        );
+                      },
+                    )
+                  : const Center(
+                      child: Text("Comienza a buscar un producto!"),
+                    ),
             ),
           ),
         ],

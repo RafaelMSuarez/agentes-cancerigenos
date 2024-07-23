@@ -9,8 +9,6 @@ class Agent {
   final int group;
   // 1 -> g1
   // 2 -> g2a
-  // 3 -> g2b// 1 -> g1
-  // 2 -> g2a
   // 3 -> g2b
   // 4 -> g3
 

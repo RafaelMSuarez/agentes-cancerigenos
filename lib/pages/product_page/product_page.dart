@@ -36,7 +36,7 @@ class _ProductPageState extends State<ProductPage> {
     double alto = MediaQuery.of(context).size.height;
     double ancho = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(),
+      // appBar: AppBar(),
       body: SafeArea(
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,15 +52,15 @@ class _ProductPageState extends State<ProductPage> {
                         fit: BoxFit.cover),
                   ),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // IconButton(
-                //   onPressed: () {
-                //     Navigator.pop(context);
-                //   },
-                //   icon: const Icon(Icons.arrow_back),
-                // ),
+                IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: const Icon(Icons.arrow_back),
+                ),
                 Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -116,43 +116,43 @@ class _ProductPageState extends State<ProductPage> {
                       itemCount: widget.product.agents!.length,
                       // physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
-                        return SizedBox(
-                          // color: Colors.red,
-                          width: ancho * 0.32,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  showModalBottomSheet(
-                                    context: context,
-                                    isScrollControlled: true,
-                                    showDragHandle: true,
-                                    builder: (context) {
-                                      return AgentPopUp(
-                                        agent: agentApi.getAgentById(
-                                            widget.product.agents![index]),
-                                      );
-                                    },
-                                  );
-                                },
-                                customBorder: const CircleBorder(),
-                                child: CircleAvatar(
+                        return GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              showDragHandle: true,
+                              builder: (context) {
+                                return AgentPopUp(
+                                  agent: agentApi.getAgentById(
+                                      widget.product.agents![index]),
+                                );
+                              },
+                            );
+                          },
+                          child: SizedBox(
+                            // color: Colors.red,
+                            width: ancho * 0.32,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CircleAvatar(
                                   radius: ancho * 0.09,
                                   child: Text(
                                     getGroup(widget.product.agents![index]),
                                   ),
                                 ),
-                              ),
-                              Text(
-                                agentApi
-                                    .getAgentById(widget.product.agents![index])
-                                    .agent,
-                                style: CardTextStyle.mainTitle,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ],
+                                Text(
+                                  agentApi
+                                      .getAgentById(
+                                          widget.product.agents![index])
+                                      .agent,
+                                  style: CardTextStyle.mainTitle,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
                           ),
                         );
                         // return ListTile(

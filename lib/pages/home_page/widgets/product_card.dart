@@ -24,7 +24,7 @@ class ProductCard extends StatelessWidget {
     }
 
     return SizedBox(
-      height: alto * 0.11,
+      height: alto * 0.12,
       child: Row(
         children: [
           CircleAvatar(

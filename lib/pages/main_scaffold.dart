@@ -43,6 +43,7 @@ class _MainScaffoldState extends State<MainScaffold> {
       ),
       body: PageView(
         controller: pageviewController,
+        
         physics: const NeverScrollableScrollPhysics(),
         children: const [
           HomePage(),
