@@ -1,6 +1,9 @@
 class Agent {
-  // Id para unir con producto
-  final int id;
+  // Id documento
+  final String? id;
+
+  // PubChem ID
+  final int? pubChemId;
   // Nombre del agente
   final String agent;
 
@@ -25,7 +28,8 @@ class Agent {
   final String? addInfo;
 
   Agent(
-      {required this.id,
+      {this.pubChemId,
+      this.id,
       required this.agent,
       required this.group,
       this.volumen,
@@ -37,7 +41,7 @@ class Agent {
 class AgentApi {
   static List<Agent> agents = [
     Agent(
-      id: 0,
+      pubChemId: 0,
       agent: "Carnes rojas",
       group: 2,
       volumen: "114",
@@ -46,7 +50,7 @@ class AgentApi {
       addInfo: "Se considera su consumo en altas temperaturas.",
     ),
     Agent(
-      id: 1,
+      pubChemId: 1,
       agent: "Carnes procesadas",
       group: 1,
       volumen: "114",
@@ -55,7 +59,7 @@ class AgentApi {
       addInfo: "Por su nivel de nitratos y nitritos.",
     ),
     Agent(
-      id: 2,
+      pubChemId: 2519,
       agent: "Cafeína",
       group: 4,
       volumen: "51",
@@ -63,7 +67,7 @@ class AgentApi {
       yearEv: 1990,
     ),
     Agent(
-      id: 3,
+      pubChemId: 3,
       agent: "Bebida alcoholica",
       group: 1,
       volumen: "44, 96, 100E",
@@ -71,7 +75,7 @@ class AgentApi {
       yearEv: 2016,
     ),
     Agent(
-      id: 4,
+      pubChemId: 4,
       agent: "Bebida muy caliente",
       group: 2,
       volumen: "116",
@@ -81,7 +85,7 @@ class AgentApi {
           "Se consideran como bebidas muy calientes aquellas que se beben mientras la temperatura se mantiene arriba de los 65°C. Es decir, beber la bebida mientras esta aún se encuentra cercana a hervir.",
     ),
     Agent(
-      id: 5,
+      pubChemId: 5,
       agent: "Aspartamo",
       group: 3,
       volumen: "134",
@@ -90,7 +94,7 @@ class AgentApi {
       addInfo: "Edulcorante permitido en Chile.",
     ),
     Agent(
-      id: 6,
+      pubChemId: 6,
       agent: "Dioxido de titanio",
       group: 3,
       volumen: "47, 93",
@@ -104,6 +108,6 @@ class AgentApi {
   List<Agent> get getAgents => agents;
 
   Agent getAgentById(int id) {
-    return agents.where((element) => element.id == id).first;
+    return agents.where((element) => element.pubChemId == id).first;
   }
 }

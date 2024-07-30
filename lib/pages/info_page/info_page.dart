@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:proyecto_ubb/style/padding_style.dart';
 import 'package:proyecto_ubb/style/text_styles.dart';
 
@@ -13,8 +12,8 @@ class InfoPage extends StatefulWidget {
 class _InfoPageState extends State<InfoPage> {
   @override
   Widget build(BuildContext context) {
-    double alto = MediaQuery.of(context).size.height;
-    double ancho = MediaQuery.of(context).size.width;
+    // double alto = MediaQuery.of(context).size.height;
+    // double ancho = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scrollbar(
         child: SingleChildScrollView(

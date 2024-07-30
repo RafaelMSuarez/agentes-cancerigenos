@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:proyecto_ubb/models/agent_model.dart';
 import 'package:proyecto_ubb/style/padding_style.dart';
 import 'package:proyecto_ubb/style/text_styles.dart';

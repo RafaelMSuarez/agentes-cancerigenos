@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:proyecto_ubb/models/agent_model.dart';
 import 'package:proyecto_ubb/pages/agents_page/widgets/agent_card.dart';
 import 'package:proyecto_ubb/pages/agents_page/widgets/agent_popup.dart';
+import 'package:proyecto_ubb/services/firebase_service.dart';
 import 'package:proyecto_ubb/style/padding_style.dart';
-import 'package:proyecto_ubb/style/text_styles.dart';
 
 class AgentsPage extends StatefulWidget {
   const AgentsPage({super.key});
@@ -13,6 +13,8 @@ class AgentsPage extends StatefulWidget {
 }
 
 class _AgentsPageState extends State<AgentsPage> {
+  final FirebaseService _firebaseService = FirebaseService();
+
   int cat = 0;
   List<String> catDesc = [
     "Mostrando todos los agentes",
@@ -23,15 +25,15 @@ class _AgentsPageState extends State<AgentsPage> {
   ];
 
   AgentApi agentApi = AgentApi();
-  List<Agent> agents = [];
+  // List<Agent> agents = [];
 
   @override
   void initState() {
-    agents = agentApi.getAgents;
+    // agents = agentApi.getAgents;
     super.initState();
   }
 
-  List<Agent> agentSort() {
+  List<Agent> agentSort(List<Agent> agents) {
     switch (cat) {
       case 1:
         return agents.where((element) => element.group == 1).toList();
@@ -55,7 +57,7 @@ class _AgentsPageState extends State<AgentsPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-           TextField(
+          TextField(
             decoration: InputDecoration(
               filled: true,
               labelText: "Buscar agente",
@@ -68,28 +70,19 @@ class _AgentsPageState extends State<AgentsPage> {
                 ),
               ),
               focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
+                borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.primary, width: 2),
                 borderRadius: const BorderRadius.all(
                   Radius.circular(50),
                 ),
               ),
             ),
           ),
-          // const SearchBar(
-          //   elevation: MaterialStatePropertyAll(1),
-          //   leading: Icon(Icons.search),
-          //   hintText: "Buscar agente",
-          // ),
           Padding(
             padding: PaddingTheme.vertical,
             child: SizedBox(
               width: ancho,
               child: SegmentedButton(
-                // style: SegmentedButton.styleFrom(
-                //   shape: RoundedRectangleBorder(
-                //     borderRadius: BorderRadius.circular(10),
-                //   ),
-                // ),
                 segments: const <ButtonSegment<int>>[
                   ButtonSegment(value: 1, label: Text("Grupo 1")),
                   ButtonSegment(value: 2, label: Text("Grupo 2A")),
@@ -121,33 +114,41 @@ class _AgentsPageState extends State<AgentsPage> {
           Expanded(
             child: Material(
               child: Scrollbar(
-                child: ListView.separated(
-                  itemCount: agentSort().length,
-                  padding: const EdgeInsets.only(
-                      bottom: PaddingTheme.paddingDoubleVertical),
-                  separatorBuilder: (context, index) {
-                    return const Divider();
-                  },
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      child: AgentCard(
-                        agent: agentSort()[index],
-                      ),
-                      onTap: () {
-                        showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          showDragHandle: true,
-                          builder: (context) {
-                            return AgentPopUp(
-                              agent: agentSort()[index],
-                            );
-                          },
+                child: StreamBuilder<List<Agent>>(
+                    stream: _firebaseService.agentsStream,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState != ConnectionState.active) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
                         );
-                      },
-                    );
-                  },
-                ),
+                      }
+                      return ListView.separated(
+                        itemCount: agentSort(snapshot.data!).length,
+                        padding: const EdgeInsets.only(
+                            bottom: PaddingTheme.paddingDoubleVertical),
+                        separatorBuilder: (context, index) {
+                          return const Divider();
+                        },
+                        itemBuilder: (context, index) {
+                          Agent agente = agentSort(snapshot.data!)[index];
+                          return InkWell(
+                            child: AgentCard(agent: agente),
+                            onTap: () {
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                showDragHandle: true,
+                                builder: (context) {
+                                  return AgentPopUp(
+                                    agent: agente,
+                                  );
+                                },
+                              );
+                            },
+                          );
+                        },
+                      );
+                    }),
               ),
             ),
           ),

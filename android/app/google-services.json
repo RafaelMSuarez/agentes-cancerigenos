@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "885585088167",
+    "project_id": "proyecto-ubb-9284a",
+    "storage_bucket": "proyecto-ubb-9284a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:885585088167:android:ebb965fb5287116b4bd582",
+        "android_client_info": {
+          "package_name": "com.example.proyecto_ubb"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAb7UPBVLfdOM3vH-JX5IxWjgqekvF5Yz8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
