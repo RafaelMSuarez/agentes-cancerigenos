@@ -9,35 +9,49 @@ class AgentPopUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String getGroup() {
-      switch (agent.group) {
-        case 1:
-          return "Grupo 1";
-        case 2:
-          return "Grupo 2A";
-        case 3:
-          return "Grupo 2B";
-        case 4:
-          return "Grupo 3";
-        default:
-          return "";
-      }
-    }
+    final List<String> grupos = [
+      "Grupo 1",
+      "Grupo 2A",
+      "Grupo 2B",
+      "Grupo 3",
+    ];
 
-    String getGroupInfo() {
-      switch (agent.group) {
-        case 1:
-          return "Carcinogénico para los humanos";
-        case 2:
-          return "Probablemente carcinogénico para humanos";
-        case 3:
-          return "Posiblemente carcinogénico para humanos";
-        case 4:
-          return "No es carcinogénico para humanos";
-        default:
-          return "";
-      }
-    }
+    final List<String> gruposDesc = [
+      "Carcinogénico para los humanos",
+      "Probablemente carcinogénico para humanos",
+      "Posiblemente carcinogénico para humanos",
+      "No es carcinogénico para humanos",
+    ];
+
+    // String getGroup() {
+    //   switch (agent.group) {
+    //     case 1:
+    //       return "Grupo 1";
+    //     case 2:
+    //       return "Grupo 2A";
+    //     case 3:
+    //       return "Grupo 2B";
+    //     case 4:
+    //       return "Grupo 3";
+    //     default:
+    //       return "";
+    //   }
+    // }
+
+    // String getGroupInfo() {
+    //   switch (agent.group) {
+    //     case 1:
+    //       return "Carcinogénico para los humanos";
+    //     case 2:
+    //       return "Probablemente carcinogénico para humanos";
+    //     case 3:
+    //       return "Posiblemente carcinogénico para humanos";
+    //     case 4:
+    //       return "No es carcinogénico para humanos";
+    //     default:
+    //       return "";
+    //   }
+    // }
 
     double alto = MediaQuery.of(context).size.height;
     double ancho = MediaQuery.of(context).size.width;
@@ -57,9 +71,9 @@ class AgentPopUp extends StatelessWidget {
                     titleTextStyle: PopUpTextStyle.mainTitle,
                   ),
                   ListTile(
-                    title: Text(getGroup()),
+                    title: Text(grupos.elementAt(agent.group - 1)),
                     titleTextStyle: PopUpTextStyle.secondTitle,
-                    subtitle: Text(getGroupInfo()),
+                    subtitle: Text(gruposDesc.elementAt(agent.group - 1)),
                     subtitleTextStyle: PopUpTextStyle.subtitle,
                   ),
                   ListTile(

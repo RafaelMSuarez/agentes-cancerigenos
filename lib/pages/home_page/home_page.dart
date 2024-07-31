@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:proyecto_ubb/models/product_model.dart';
 import 'package:proyecto_ubb/pages/home_page/widgets/product_card.dart';
 import 'package:proyecto_ubb/pages/product_page/product_page.dart';
@@ -16,13 +18,31 @@ class _HomePageState extends State<HomePage> {
   ProductApi productApi = ProductApi();
   List<Product> products = [];
 
-  bool presente = true;
+  bool presente = true; //CAMBIAR
 
   @override
   void initState() {
     products = productApi.getProducts;
 
     super.initState();
+  }
+
+  String _scanBarcode = "";
+
+  Future<void> scanBarcodeNormal() async {
+    String barcodeScanRes;
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          '#ff6666', 'Cancel', true, ScanMode.BARCODE);
+      // print(barcodeScanRes);
+    } on PlatformException {
+      barcodeScanRes = 'Failed to get platform version.';
+    }
+    if (!mounted) return;
+
+    setState(() {
+      _scanBarcode = barcodeScanRes;
+    });
   }
 
   @override
@@ -64,9 +84,13 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.only(left: 10),
                 child: IconButton(
                   onPressed: () {
-                    setState(() {
-                      presente = !presente;
-                    });
+                    scanBarcodeNormal().then((value) =>
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(_scanBarcode == "-1"
+                              ? "Operación cancelada"
+                              : _scanBarcode),
+                          duration: const Duration(seconds: 10),
+                        )));
                   },
                   icon: const Icon(Icons.camera_alt),
                   iconSize: 40,

@@ -108,9 +108,9 @@ class _AgentsPageState extends State<AgentsPage> {
               style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 16),
             ),
           ),
-          SizedBox(
-            height: alto * 0.02,
-          ),
+          // SizedBox(
+          //   height: alto * 0.02,
+          // ),
           Expanded(
             child: Material(
               child: Scrollbar(
@@ -122,10 +122,19 @@ class _AgentsPageState extends State<AgentsPage> {
                           child: CircularProgressIndicator(),
                         );
                       }
+                      if (!snapshot.hasData) {
+                        return const Center(
+                          child: Text("No hay elementos"),
+                        );
+                      }
+                      if (snapshot.data!.isEmpty) {
+                        return const Center(
+                          child: Text("No hay elementos"),
+                        );
+                      }
                       return ListView.separated(
                         itemCount: agentSort(snapshot.data!).length,
-                        padding: const EdgeInsets.only(
-                            bottom: PaddingTheme.paddingDoubleVertical),
+                        padding: PaddingTheme.vertical,
                         separatorBuilder: (context, index) {
                           return const Divider();
                         },
