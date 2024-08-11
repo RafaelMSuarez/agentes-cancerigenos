@@ -50,7 +50,7 @@ class _AgentsPageState extends State<AgentsPage> {
 
   @override
   Widget build(BuildContext context) {
-    double alto = MediaQuery.of(context).size.height;
+    // double alto = MediaQuery.of(context).size.height;
     double ancho = MediaQuery.of(context).size.width;
     return Padding(
       padding: PaddingTheme.allPage,

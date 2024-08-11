@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:openfoodfacts/openfoodfacts.dart';
 import 'package:proyecto_ubb/models/product_model.dart';
 import 'package:proyecto_ubb/pages/home_page/widgets/product_card.dart';
 import 'package:proyecto_ubb/pages/product_page/product_page.dart';
+import 'package:proyecto_ubb/services/custom_exceptions.dart';
+import 'package:proyecto_ubb/services/open_food_facts_service.dart';
 import 'package:proyecto_ubb/style/padding_style.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,9 +19,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool checkbox = false;
   ProductApi productApi = ProductApi();
-  List<Product> products = [];
+  OpenFoodFactsService openFoodFactsService = OpenFoodFactsService();
+  List<ProductModel> products = [];
 
-  bool presente = true; //CAMBIAR
+  Product? singleProduct;
+
+  bool loading = false;
 
   @override
   void initState() {
@@ -83,14 +89,51 @@ class _HomePageState extends State<HomePage> {
               Padding(
                 padding: const EdgeInsets.only(left: 10),
                 child: IconButton(
-                  onPressed: () {
-                    scanBarcodeNormal().then((value) =>
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(_scanBarcode == "-1"
-                              ? "Operación cancelada"
-                              : _scanBarcode),
-                          duration: const Duration(seconds: 10),
-                        )));
+                  onPressed: () async {
+                    scanBarcodeNormal().then(
+                      (value) async {
+                        if (_scanBarcode == "-1") {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text("Operación cancelada.")));
+                        } else {
+                          setState(() {
+                            loading = true;
+                          });
+                          await openFoodFactsService
+                              .getProduct(_scanBarcode)
+                              .then((value) {
+                            singleProduct = value;
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return ProductPage(
+                                    product:
+                                        productApi.parserProduct(singleProduct),
+                                  );
+                                },
+                              ),
+                            );
+                            setState(() {
+                              loading = false;
+                            });
+                          }).catchError((e) {
+                            setState(() {
+                              loading = false;
+                            });
+                            if (e is NoProductFoundException) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Producto no encontrado."),
+                                ),
+                              );
+                            }
+                          });
+                        }
+                      },
+                    );
                   },
                   icon: const Icon(Icons.camera_alt),
                   iconSize: 40,
@@ -116,34 +159,38 @@ class _HomePageState extends State<HomePage> {
           ),
           Expanded(
             child: Scrollbar(
-              child: presente
-                  ? ListView.separated(
-                      itemCount: products.length,
-                      separatorBuilder: (context, index) {
-                        return const Divider(
-                          height: 0,
-                        );
-                      },
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          child: ProductCard(product: products[index]),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return ProductPage(
-                                    product: products[index],
-                                  );
-                                },
-                              ),
+              child: !loading
+                  ? products.isEmpty
+                      ? const Center(
+                          child: Text("Comienza a buscar un producto!"),
+                        )
+                      : ListView.separated(
+                          itemCount: products.length,
+                          separatorBuilder: (context, index) {
+                            return const Divider(
+                              height: 0,
                             );
                           },
-                        );
-                      },
-                    )
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                              child: ProductCard(product: products[index]),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return ProductPage(
+                                        product: products[index],
+                                      );
+                                    },
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        )
                   : const Center(
-                      child: Text("Comienza a buscar un producto!"),
+                      child: CircularProgressIndicator(),
                     ),
             ),
           ),
