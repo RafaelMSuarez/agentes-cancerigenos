@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:proyecto_ubb/models/agent_model.dart';
 import 'package:proyecto_ubb/pages/agents_page/widgets/agent_card.dart';
@@ -14,6 +17,7 @@ class AgentsPage extends StatefulWidget {
 
 class _AgentsPageState extends State<AgentsPage> {
   final FirebaseService _firebaseService = FirebaseService();
+  final _scrollBarController = ScrollController();
 
   int cat = 0;
   List<String> catDesc = [
@@ -48,121 +52,158 @@ class _AgentsPageState extends State<AgentsPage> {
     }
   }
 
+  final _textSearchController = TextEditingController();
+  StreamController<List<Agent>> streamController =
+      StreamController<List<Agent>>.broadcast();
+
+  void _filter(List<Agent> listaAgents, String query) {
+    streamController.add(listaAgents
+        .where(
+          (element) =>
+              element.agent.toLowerCase().contains(query.toLowerCase()),
+        )
+        .toList());
+  }
+
+  @override
+  void dispose() {
+    _textSearchController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     // double alto = MediaQuery.of(context).size.height;
     double ancho = MediaQuery.of(context).size.width;
-    return Padding(
-      padding: PaddingTheme.allPage,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TextField(
-            decoration: InputDecoration(
-              filled: true,
-              labelText: "Buscar agente",
-              prefixIcon: const Icon(Icons.search),
-              contentPadding: EdgeInsets.zero,
-              enabledBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.transparent),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(50),
+    return StreamBuilder<List<Agent>>(
+        stream: _firebaseService.agentsStream,
+        builder: (context, snapshot) {
+          return Padding(
+            padding: PaddingTheme.allPage,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: _textSearchController,
+                  decoration: InputDecoration(
+                    filled: true,
+                    labelText: "Buscar agente",
+                    prefixIcon: const Icon(Icons.search),
+                    contentPadding: EdgeInsets.zero,
+                    enabledBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.transparent),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(50),
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.primary,
+                          width: 2),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(50),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: Theme.of(context).colorScheme.primary, width: 2),
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(50),
+                Padding(
+                  padding: PaddingTheme.vertical,
+                  child: SizedBox(
+                    width: ancho,
+                    child: SegmentedButton(
+                      segments: const <ButtonSegment<int>>[
+                        ButtonSegment(value: 1, label: Text("Grupo 1")),
+                        ButtonSegment(value: 2, label: Text("Grupo 2A")),
+                        ButtonSegment(value: 3, label: Text("Grupo 2B")),
+                        ButtonSegment(value: 4, label: Text("Grupo 3")),
+                      ],
+                      selected: <int>{cat},
+                      showSelectedIcon: false,
+                      emptySelectionAllowed: true,
+                      onSelectionChanged: (set) {
+                        setState(() {
+                          cat = set.isEmpty ? 0 : set.first;
+                        });
+                      },
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: PaddingTheme.vertical,
-            child: SizedBox(
-              width: ancho,
-              child: SegmentedButton(
-                segments: const <ButtonSegment<int>>[
-                  ButtonSegment(value: 1, label: Text("Grupo 1")),
-                  ButtonSegment(value: 2, label: Text("Grupo 2A")),
-                  ButtonSegment(value: 3, label: Text("Grupo 2B")),
-                  ButtonSegment(value: 4, label: Text("Grupo 3")),
-                ],
-                selected: <int>{cat},
-                showSelectedIcon: false,
-                emptySelectionAllowed: true,
-                onSelectionChanged: (set) {
-                  setState(() {
-                    cat = set.isEmpty ? 0 : set.first;
-                  });
-                },
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-                bottom: PaddingTheme.paddingDoubleVertical),
-            child: Text(
-              catDesc[cat],
-              style: const TextStyle(fontStyle: FontStyle.italic, fontSize: 16),
-            ),
-          ),
-          // SizedBox(
-          //   height: alto * 0.02,
-          // ),
-          Expanded(
-            child: Material(
-              child: Scrollbar(
-                child: StreamBuilder<List<Agent>>(
-                    stream: _firebaseService.agentsStream,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState != ConnectionState.active) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      if (!snapshot.hasData) {
-                        return const Center(
-                          child: Text("No hay elementos"),
-                        );
-                      }
-                      if (snapshot.data!.isEmpty) {
-                        return const Center(
-                          child: Text("No hay elementos"),
-                        );
-                      }
-                      return ListView.separated(
-                        itemCount: agentSort(snapshot.data!).length,
-                        padding: PaddingTheme.vertical,
-                        separatorBuilder: (context, index) {
-                          return const Divider();
-                        },
-                        itemBuilder: (context, index) {
-                          Agent agente = agentSort(snapshot.data!)[index];
-                          return InkWell(
-                            child: AgentCard(agent: agente),
-                            onTap: () {
-                              showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                showDragHandle: true,
-                                builder: (context) {
-                                  return AgentPopUp(
-                                    agent: agente,
+                Padding(
+                  padding: const EdgeInsets.only(
+                      bottom: PaddingTheme.paddingDoubleVertical),
+                  child: Text(
+                    catDesc[cat],
+                    style: const TextStyle(
+                        fontStyle: FontStyle.italic, fontSize: 16),
+                  ),
+                ),
+                snapshot.data == null || snapshot.data!.isEmpty
+                    ? const Expanded(
+                        child: Center(
+                          child:
+                              Text("Presione el botón para agregar un agente!"),
+                        ),
+                      )
+                    : Expanded(
+                        child: Material(
+                          child: Scrollbar(
+                            controller: _scrollBarController,
+                            child: StreamBuilder<List<Agent>>(
+                                key: Key("${Random().nextDouble()}"),
+                                stream: streamController.stream,
+                                initialData: snapshot.data!,
+                                builder: (context, snapshotFilter) {
+                                  if (snapshot.connectionState !=
+                                      ConnectionState.active) {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  }
+                                  if (!snapshotFilter.hasData) {
+                                    return const Center(
+                                      child: Text("No hay elementos"),
+                                    );
+                                  }
+                                  if (snapshotFilter.data!.isEmpty) {
+                                    return const Center(
+                                      child: Text("No hay elementos"),
+                                    );
+                                  }
+                                  return ListView.separated(
+                                    controller: _scrollBarController,
+                                    itemCount:
+                                        agentSort(snapshotFilter.data!).length,
+                                    padding: PaddingTheme.vertical,
+                                    separatorBuilder: (context, index) {
+                                      return const Divider();
+                                    },
+                                    itemBuilder: (context, index) {
+                                      Agent agente = agentSort(
+                                          snapshotFilter.data!)[index];
+                                      return InkWell(
+                                        child: AgentCard(agent: agente),
+                                        onTap: () {
+                                          showModalBottomSheet(
+                                            context: context,
+                                            isScrollControlled: true,
+                                            showDragHandle: true,
+                                            builder: (context) {
+                                              return AgentPopUp(
+                                                agent: agente,
+                                              );
+                                            },
+                                          );
+                                        },
+                                      );
+                                    },
                                   );
-                                },
-                              );
-                            },
-                          );
-                        },
-                      );
-                    }),
-              ),
+                                }),
+                          ),
+                        ),
+                      ),
+              ],
             ),
-          ),
-        ],
-      ),
-    );
+          );
+        });
   }
 }
