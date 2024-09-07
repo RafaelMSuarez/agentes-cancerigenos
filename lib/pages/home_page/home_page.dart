@@ -17,23 +17,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool checkbox = false;
-  ProductApi productApi = ProductApi();
-  OpenFoodFactsService openFoodFactsService = OpenFoodFactsService();
-  List<ProductModel> products = [];
-
   Product? singleProduct;
 
-  bool loading = false;
-
-  @override
-  void initState() {
-    products = productApi.getProducts;
-
-    super.initState();
-  }
-
   String _scanBarcode = "";
+  String? searchQuery;
+
+  bool loading = false;
 
   Future<void> scanBarcodeNormal() async {
     String barcodeScanRes;
@@ -84,56 +73,97 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
+                  onSubmitted: (value) {
+                    setState(() {
+                      searchQuery = value;
+                    });
+                  },
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 10),
                 child: IconButton(
                   onPressed: () async {
-                    scanBarcodeNormal().then(
-                      (value) async {
-                        if (_scanBarcode == "-1") {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text("Operación cancelada.")));
-                        } else {
-                          setState(() {
-                            loading = true;
-                          });
-                          await openFoodFactsService
-                              .getProduct(_scanBarcode)
-                              .then((value) {
-                            singleProduct = value;
-
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return ProductPage(
-                                    product:
-                                        productApi.parserProduct(singleProduct),
-                                  );
-                                },
-                              ),
+                    setState(() {
+                      loading = true;
+                    });
+                    await getProductBarcode("8410109109832").then((value) {
+                      singleProduct = value;
+                      if (!context.mounted) return;
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return ProductPage(
+                              product: singleProduct!,
                             );
-                            setState(() {
-                              loading = false;
-                            });
-                          }).catchError((e) {
-                            setState(() {
-                              loading = false;
-                            });
-                            if (e is NoProductFoundException) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text("Producto no encontrado."),
-                                ),
-                              );
-                            }
-                          });
+                          },
+                        ),
+                      );
+                      setState(() {
+                        loading = false;
+                      });
+                    }).catchError(
+                      (e) {
+                        setState(() {
+                          loading = false;
+                        });
+                        if (e is NoProductFoundException) {
+                          if (!context.mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Producto no encontrado."),
+                            ),
+                          );
                         }
                       },
                     );
+                    // await scanBarcodeNormal().then(
+                    //   (value) async {
+                    //     if (_scanBarcode == "-1") {
+                    //       if (!context.mounted) return;
+                    //       ScaffoldMessenger.of(context).showSnackBar(
+                    //           const SnackBar(
+                    //               content: Text("Operación cancelada.")));
+                    //     } else {
+                    //       setState(() {
+                    //         loading = true;
+                    //       });
+                    //       await openFoodFactsService
+                    //           .getProduct(_scanBarcode)
+                    //           .then((value) {
+                    //         singleProduct = value;
+                    //         if (!context.mounted) return;
+                    //         Navigator.push(
+                    //           context,
+                    //           MaterialPageRoute(
+                    //             builder: (context) {
+                    //               return ProductPage(
+                    //                 product:
+                    //                     productApi.parserProduct(singleProduct),
+                    //               );
+                    //             },
+                    //           ),
+                    //         );
+                    //         setState(() {
+                    //           loading = false;
+                    //         });
+                    //       }).catchError((e) {
+                    //         setState(() {
+                    //           loading = false;
+                    //         });
+                    //         if (e is NoProductFoundException) {
+                    //           if (!context.mounted) return;
+                    //           ScaffoldMessenger.of(context).showSnackBar(
+                    //             const SnackBar(
+                    //               content: Text("Producto no encontrado."),
+                    //             ),
+                    //           );
+                    //         }
+                    //       });
+                    //     }
+                    //   },
+                    // );
                   },
                   icon: const Icon(Icons.camera_alt),
                   iconSize: 40,
@@ -141,58 +171,55 @@ class _HomePageState extends State<HomePage> {
               )
             ],
           ),
-          Row(
-            children: [
-              const Text("Buscar producto por UID"),
-              Checkbox(
-                value: checkbox,
-                onChanged: (value) {
-                  setState(() {
-                    checkbox = value!;
-                  });
-                },
-              ),
-            ],
-          ),
           SizedBox(
             height: alto * 0.02,
           ),
           Expanded(
-            child: Scrollbar(
-              child: !loading
-                  ? products.isEmpty
-                      ? const Center(
-                          child: Text("Comienza a buscar un producto!"),
-                        )
-                      : ListView.separated(
-                          itemCount: products.length,
-                          separatorBuilder: (context, index) {
-                            return const Divider(
-                              height: 0,
-                            );
-                          },
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                              child: ProductCard(product: products[index]),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return ProductPage(
-                                        product: products[index],
+            child: FutureBuilder<List<Product>?>(
+                future: searchProductsByName(searchQuery),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return Scrollbar(
+                    child: !loading
+                        ? snapshot.data == null || snapshot.data!.isEmpty
+                            ? const Center(
+                                child: Text("Comienza a buscar un producto!"),
+                              )
+                            : ListView.separated(
+                                itemCount: snapshot.data!.length,
+                                separatorBuilder: (context, index) {
+                                  return const Divider(
+                                    height: 0,
+                                  );
+                                },
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                    child: ProductCard(
+                                        product: snapshot.data![index]),
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) {
+                                            return ProductPage(
+                                              product: snapshot.data![index],
+                                            );
+                                          },
+                                        ),
                                       );
                                     },
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                        )
-                  : const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-            ),
+                                  );
+                                },
+                              )
+                        : const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                  );
+                }),
           ),
         ],
       ),

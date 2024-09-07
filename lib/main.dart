@@ -16,10 +16,10 @@ Future<void> main() async {
       name: "proyecto-ubb-productos-cancerigenos",
       comment:
           "App made for my University's Final Year Project.It's an App that informs about carcinogenic agents contained in food products in Chile.");
-  // OpenFoodAPIConfiguration.globalLanguages = <OpenFoodFactsLanguage>[
-  //   OpenFoodFactsLanguage.SPANISH
-  // ];
-  // OpenFoodAPIConfiguration.globalCountry = OpenFoodFactsCountry.CHILE;
+  OpenFoodAPIConfiguration.globalLanguages = <OpenFoodFactsLanguage>[
+    OpenFoodFactsLanguage.SPANISH
+  ];
+  OpenFoodAPIConfiguration.globalCountry = OpenFoodFactsCountry.CHILE;
 
   runApp(const MainApp());
 }
