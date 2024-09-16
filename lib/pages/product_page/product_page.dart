@@ -4,7 +4,9 @@ import 'package:openfoodfacts/openfoodfacts.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:proyecto_ubb/style/padding_style.dart';
 import 'package:proyecto_ubb/style/text_styles.dart';
+import 'package:proyecto_ubb/utils/nutriments_utils.dart';
 import 'package:proyecto_ubb/utils/nutriscore_utils.dart';
+import 'package:proyecto_ubb/utils/string_utils.dart';
 
 class ProductPage extends StatefulWidget {
   final Product product;
@@ -147,7 +149,7 @@ class _ProductPageState extends State<ProductPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.product.productName ?? "",
+                          firstToUpperCase(widget.product.productName),
                           style: TitleTextStyle.mainTitle,
                         ),
                         const SizedBox(
@@ -195,9 +197,16 @@ class _ProductPageState extends State<ProductPage> {
                 ],
               ),
               ExpansionTile(
+                title: const Text("Información Nutricional"),
+                childrenPadding: const EdgeInsets.only(bottom: 15),
+                children: [
+                  nutrimentsTable(context, ancho, widget.product),
+                ],
+              ),
+              ExpansionTile(
                 childrenPadding: PaddingTheme.horizontal.copyWith(bottom: 15),
                 expandedAlignment: Alignment.centerLeft,
-                title: const Text("Carcinogenicos"),
+                title: const Text("Agentes"),
               ),
               ExpansionTile(
                 title: const Text("Ingredientes"),
@@ -205,11 +214,8 @@ class _ProductPageState extends State<ProductPage> {
                 expandedAlignment: Alignment.centerLeft,
                 children: [
                   Text(
-                      "${widget.product.ingredientsTextInLanguages![OpenFoodFactsLanguage.SPANISH]}")
+                      "${widget.product.ingredientsTextInLanguages != null ? widget.product.ingredientsTextInLanguages![OpenFoodFactsLanguage.SPANISH] : ""}"),
                 ],
-              ),
-              const ExpansionTile(
-                title: Text("Información Nutricional"),
               ),
             ],
           ),

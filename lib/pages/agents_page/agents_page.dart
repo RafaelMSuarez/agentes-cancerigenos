@@ -28,15 +28,6 @@ class _AgentsPageState extends State<AgentsPage> {
     "No es carcinogénico para humanos"
   ];
 
-  AgentApi agentApi = AgentApi();
-  // List<Agent> agents = [];
-
-  @override
-  void initState() {
-    // agents = agentApi.getAgents;
-    super.initState();
-  }
-
   List<Agent> agentSort(List<Agent> agents) {
     switch (cat) {
       case 1:
@@ -105,6 +96,9 @@ class _AgentsPageState extends State<AgentsPage> {
                       ),
                     ),
                   ),
+                  onChanged: (value) {
+                    _filter(snapshot.data ?? [], value);
+                  },
                 ),
                 Padding(
                   padding: PaddingTheme.vertical,
@@ -151,7 +145,7 @@ class _AgentsPageState extends State<AgentsPage> {
                             child: StreamBuilder<List<Agent>>(
                                 key: Key("${Random().nextDouble()}"),
                                 stream: streamController.stream,
-                                initialData: snapshot.data!,
+                                initialData: snapshot.data,
                                 builder: (context, snapshotFilter) {
                                   if (snapshot.connectionState !=
                                       ConnectionState.active) {
@@ -164,15 +158,18 @@ class _AgentsPageState extends State<AgentsPage> {
                                       child: Text("No hay elementos"),
                                     );
                                   }
-                                  if (snapshotFilter.data!.isEmpty) {
+                                  if (snapshotFilter.data == null ||
+                                      snapshotFilter.data!.isEmpty) {
                                     return const Center(
                                       child: Text("No hay elementos"),
                                     );
                                   }
                                   return ListView.separated(
+                                    key: Key("${Random().nextDouble()}"),
                                     controller: _scrollBarController,
                                     itemCount:
-                                        agentSort(snapshotFilter.data!).length,
+                                        agentSort(snapshotFilter.data ?? [])
+                                            .length,
                                     padding: PaddingTheme.vertical,
                                     separatorBuilder: (context, index) {
                                       return const Divider();

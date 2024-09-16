@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 
 abstract class TitleTextStyle {
-  static const TextStyle mainTitle = TextStyle(
-    fontSize: 20,
-    fontWeight: FontWeight.bold
-  );
+  static const TextStyle mainTitle =
+      TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
 
   static const TextStyle secondTitle = TextStyle(
     fontSize: 20,
@@ -38,5 +36,10 @@ abstract class PopUpTextStyle {
     fontSize: 15,
     fontWeight: FontWeight.w300,
     fontStyle: FontStyle.italic,
+  );
+
+  static const TextStyle content = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w300,
   );
 }

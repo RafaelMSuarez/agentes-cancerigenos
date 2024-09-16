@@ -5,6 +5,9 @@ final List<ProductField> fields = [
   ProductField.BARCODE,
   ProductField.NAME,
   ProductField.QUANTITY,
+  ProductField.PACKAGING_QUANTITY,
+  ProductField.SERVING_SIZE,
+  ProductField.SERVING_QUANTITY,
   ProductField.INGREDIENTS,
   ProductField.INGREDIENTS_TEXT_IN_LANGUAGES,
   ProductField.INGREDIENTS_TAGS,
@@ -16,6 +19,7 @@ final List<ProductField> fields = [
   ProductField.IMAGE_NUTRITION_URL,
   ProductField.IMAGE_INGREDIENTS_URL,
   ProductField.NUTRISCORE,
+  ProductField.NUTRIMENTS
 ];
 
 Future<Product?> getProductBarcode(String barcode) async {

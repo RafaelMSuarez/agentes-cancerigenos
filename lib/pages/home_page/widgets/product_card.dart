@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 import 'package:proyecto_ubb/style/padding_style.dart';
 import 'package:proyecto_ubb/style/text_styles.dart';
+import 'package:proyecto_ubb/utils/string_utils.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
@@ -40,9 +41,11 @@ class ProductCard extends StatelessWidget {
               ),
             ),
             errorWidget: (context, url, error) {
-              return const Image(
-                fit: BoxFit.cover,
-                image: AssetImage("assets/placeholder.png"),
+              return CircleAvatar(
+                radius: alto * 0.04,
+                backgroundImage: const AssetImage(
+                  "assets/placeholder.png",
+                ),
               );
             },
             imageBuilder: (context, imageProvider) {
@@ -60,7 +63,7 @@ class ProductCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    product.productName ?? "",
+                    firstToUpperCase(product.productName),
                     style: CardTextStyle.mainTitle,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,

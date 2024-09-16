@@ -24,7 +24,16 @@ class Agent {
   // Año de evaluación
   final int? yearEv;
 
-  // Información adicional
+  /// Descripción del agente
+  final String? descInfo;
+
+  /// Información sobre evidencia de carcinogenicidad en humanos
+  final String? infoHumanos;
+
+  /// Información sobre evidencia de carcinogenicidad en animales
+  final String? infoAnimales;
+
+  /// Información adicional
   final String? addInfo;
 
   Agent(
@@ -35,79 +44,8 @@ class Agent {
       this.volumen,
       this.yearPub,
       this.yearEv,
+      this.descInfo,
+      this.infoHumanos,
+      this.infoAnimales,
       this.addInfo});
-}
-
-class AgentApi {
-  static List<Agent> agents = [
-    Agent(
-      pubChemId: 0,
-      agent: "Carnes rojas",
-      group: 2,
-      volumen: "114",
-      yearPub: 2018,
-      yearEv: 2015,
-      addInfo: "Se considera su consumo en altas temperaturas.",
-    ),
-    Agent(
-      pubChemId: 1,
-      agent: "Carnes procesadas",
-      group: 1,
-      volumen: "114",
-      yearPub: 2018,
-      yearEv: 2015,
-      addInfo: "Por su nivel de nitratos y nitritos.",
-    ),
-    Agent(
-      pubChemId: 2519,
-      agent: "Cafeína",
-      group: 4,
-      volumen: "51",
-      yearPub: 1991,
-      yearEv: 1990,
-    ),
-    Agent(
-      pubChemId: 3,
-      agent: "Bebida alcoholica",
-      group: 1,
-      volumen: "44, 96, 100E",
-      yearPub: 2018,
-      yearEv: 2016,
-    ),
-    Agent(
-      pubChemId: 4,
-      agent: "Bebida muy caliente",
-      group: 2,
-      volumen: "116",
-      yearPub: 2018,
-      yearEv: 2016,
-      addInfo:
-          "Se consideran como bebidas muy calientes aquellas que se beben mientras la temperatura se mantiene arriba de los 65°C. Es decir, beber la bebida mientras esta aún se encuentra cercana a hervir.",
-    ),
-    Agent(
-      pubChemId: 5,
-      agent: "Aspartamo",
-      group: 3,
-      volumen: "134",
-      yearPub: 2024,
-      yearEv: 2023,
-      addInfo: "Edulcorante permitido en Chile.",
-    ),
-    Agent(
-      pubChemId: 6,
-      agent: "Dioxido de titanio",
-      group: 3,
-      volumen: "47, 93",
-      yearPub: 2010,
-      yearEv: 2006,
-      addInfo:
-          "Sustancia colorante permitida en Chile. Se encuentra prohíbido su uso en alimentos por la Unión Europea",
-    ),
-  ];
-
-  List<Agent> get getAgents => agents;
-
-  Agent getAgentById(int id) {
-    return agents.where((element) => element.pubChemId == id).first;
-  }
 }

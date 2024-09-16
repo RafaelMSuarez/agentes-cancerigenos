@@ -21,6 +21,7 @@ class _HomePageState extends State<HomePage> {
 
   String _scanBarcode = "";
   String? searchQuery;
+  late Future<List<Product>?> _products;
 
   bool loading = false;
 
@@ -38,6 +39,12 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _scanBarcode = barcodeScanRes;
     });
+  }
+
+  @override
+  void initState() {
+    _products = searchProductsByName(searchQuery);
+    super.initState();
   }
 
   @override
@@ -75,7 +82,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   onSubmitted: (value) {
                     setState(() {
-                      searchQuery = value;
+                      _products = searchProductsByName(value.trim());
                     });
                   },
                 ),
@@ -87,83 +94,83 @@ class _HomePageState extends State<HomePage> {
                     setState(() {
                       loading = true;
                     });
-                    await getProductBarcode("8410109109832").then((value) {
-                      singleProduct = value;
-                      if (!context.mounted) return;
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return ProductPage(
-                              product: singleProduct!,
-                            );
-                          },
-                        ),
-                      );
-                      setState(() {
-                        loading = false;
-                      });
-                    }).catchError(
-                      (e) {
-                        setState(() {
-                          loading = false;
-                        });
-                        if (e is NoProductFoundException) {
-                          if (!context.mounted) return;
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Producto no encontrado."),
-                            ),
-                          );
-                        }
-                      },
-                    );
-                    // await scanBarcodeNormal().then(
-                    //   (value) async {
-                    //     if (_scanBarcode == "-1") {
+                    // await getProductBarcode("8410109109832").then((value) {
+                    //   singleProduct = value;
+                    //   if (!context.mounted) return;
+                    //   Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //       builder: (context) {
+                    //         return ProductPage(
+                    //           product: singleProduct!,
+                    //         );
+                    //       },
+                    //     ),
+                    //   );
+                    //   setState(() {
+                    //     loading = false;
+                    //   });
+                    // }).catchError(
+                    //   (e) {
+                    //     setState(() {
+                    //       loading = false;
+                    //     });
+                    //     if (e is NoProductFoundException) {
                     //       if (!context.mounted) return;
                     //       ScaffoldMessenger.of(context).showSnackBar(
-                    //           const SnackBar(
-                    //               content: Text("Operación cancelada.")));
-                    //     } else {
-                    //       setState(() {
-                    //         loading = true;
-                    //       });
-                    //       await openFoodFactsService
-                    //           .getProduct(_scanBarcode)
-                    //           .then((value) {
-                    //         singleProduct = value;
-                    //         if (!context.mounted) return;
-                    //         Navigator.push(
-                    //           context,
-                    //           MaterialPageRoute(
-                    //             builder: (context) {
-                    //               return ProductPage(
-                    //                 product:
-                    //                     productApi.parserProduct(singleProduct),
-                    //               );
-                    //             },
-                    //           ),
-                    //         );
-                    //         setState(() {
-                    //           loading = false;
-                    //         });
-                    //       }).catchError((e) {
-                    //         setState(() {
-                    //           loading = false;
-                    //         });
-                    //         if (e is NoProductFoundException) {
-                    //           if (!context.mounted) return;
-                    //           ScaffoldMessenger.of(context).showSnackBar(
-                    //             const SnackBar(
-                    //               content: Text("Producto no encontrado."),
-                    //             ),
-                    //           );
-                    //         }
-                    //       });
+                    //         const SnackBar(
+                    //           content: Text("Producto no encontrado."),
+                    //         ),
+                    //       );
                     //     }
                     //   },
                     // );
+                    await scanBarcodeNormal().then(
+                      (value) async {
+                        if (_scanBarcode == "-1") {
+                          if (!context.mounted) return;
+                          setState(() {
+                            loading = false;
+                          });
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text("Operación cancelada.")));
+                        } else {
+                          setState(() {
+                            loading = true;
+                          });
+                          await getProductBarcode(_scanBarcode).then((value) {
+                            singleProduct = value;
+                            if (!context.mounted) return;
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return ProductPage(
+                                    product: singleProduct!,
+                                  );
+                                },
+                              ),
+                            );
+                            setState(() {
+                              loading = false;
+                            });
+                          }).catchError((e) {
+                            setState(() {
+                              loading = false;
+                            });
+                            if (e is NoProductFoundException) {
+                              if (!context.mounted) return;
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Producto no encontrado."),
+                                ),
+                              );
+                            }
+                          });
+                        }
+                      },
+                    );
                   },
                   icon: const Icon(Icons.camera_alt),
                   iconSize: 40,
@@ -176,49 +183,50 @@ class _HomePageState extends State<HomePage> {
           ),
           Expanded(
             child: FutureBuilder<List<Product>?>(
-                future: searchProductsByName(searchQuery),
+                future: _products,
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return Scrollbar(
+                      child: !loading
+                          ? snapshot.data == null || snapshot.data!.isEmpty
+                              ? const Center(
+                                  child: Text("Comienza a buscar un producto!"),
+                                )
+                              : ListView.separated(
+                                  itemCount: snapshot.data!.length,
+                                  separatorBuilder: (context, index) {
+                                    return const Divider(
+                                      height: 0,
+                                    );
+                                  },
+                                  itemBuilder: (context, index) {
+                                    return InkWell(
+                                      child: ProductCard(
+                                          product: snapshot.data![index]),
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) {
+                                              return ProductPage(
+                                                product: snapshot.data![index],
+                                              );
+                                            },
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                )
+                          : const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                    );
+                  } else {
                     return const Center(
                       child: CircularProgressIndicator(),
                     );
                   }
-                  return Scrollbar(
-                    child: !loading
-                        ? snapshot.data == null || snapshot.data!.isEmpty
-                            ? const Center(
-                                child: Text("Comienza a buscar un producto!"),
-                              )
-                            : ListView.separated(
-                                itemCount: snapshot.data!.length,
-                                separatorBuilder: (context, index) {
-                                  return const Divider(
-                                    height: 0,
-                                  );
-                                },
-                                itemBuilder: (context, index) {
-                                  return InkWell(
-                                    child: ProductCard(
-                                        product: snapshot.data![index]),
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) {
-                                            return ProductPage(
-                                              product: snapshot.data![index],
-                                            );
-                                          },
-                                        ),
-                                      );
-                                    },
-                                  );
-                                },
-                              )
-                        : const Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                  );
                 }),
           ),
         ],

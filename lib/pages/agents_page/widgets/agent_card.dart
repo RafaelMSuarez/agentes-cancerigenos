@@ -23,14 +23,14 @@ class AgentCard extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
-          agent.addInfo == null
-              ? const SizedBox()
-              : Text(
-                  agent.addInfo!,
-                  style: CardTextStyle.secondTitle,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
+          Text(
+            agent.descInfo == null || agent.descInfo!.isEmpty
+                ? "Sin información"
+                : agent.descInfo!,
+            style: CardTextStyle.secondTitle,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
         ],
       ),
     );

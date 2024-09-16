@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:proyecto_ubb/models/agent_model.dart';
 import 'package:proyecto_ubb/style/padding_style.dart';
 import 'package:proyecto_ubb/style/text_styles.dart';
+import 'package:proyecto_ubb/utils/string_utils.dart';
 
 class AgentPopUp extends StatelessWidget {
   final Agent agent;
@@ -23,40 +24,10 @@ class AgentPopUp extends StatelessWidget {
       "No es carcinogénico para humanos",
     ];
 
-    // String getGroup() {
-    //   switch (agent.group) {
-    //     case 1:
-    //       return "Grupo 1";
-    //     case 2:
-    //       return "Grupo 2A";
-    //     case 3:
-    //       return "Grupo 2B";
-    //     case 4:
-    //       return "Grupo 3";
-    //     default:
-    //       return "";
-    //   }
-    // }
-
-    // String getGroupInfo() {
-    //   switch (agent.group) {
-    //     case 1:
-    //       return "Carcinogénico para los humanos";
-    //     case 2:
-    //       return "Probablemente carcinogénico para humanos";
-    //     case 3:
-    //       return "Posiblemente carcinogénico para humanos";
-    //     case 4:
-    //       return "No es carcinogénico para humanos";
-    //     default:
-    //       return "";
-    //   }
-    // }
-
     double alto = MediaQuery.of(context).size.height;
     double ancho = MediaQuery.of(context).size.width;
     return SizedBox(
-      height: alto * 0.6,
+      height: alto * 0.7,
       child: SingleChildScrollView(
         child: Center(
           child: Padding(
@@ -76,43 +47,71 @@ class AgentPopUp extends StatelessWidget {
                     subtitle: Text(gruposDesc.elementAt(agent.group - 1)),
                     subtitleTextStyle: PopUpTextStyle.subtitle,
                   ),
-                  ListTile(
-                    title: const Text("Información:"),
-                    titleTextStyle: PopUpTextStyle.secondTitle,
-                    subtitle: Text(
-                      agent.addInfo == null
-                          ? "Sin información"
-                          : agent.addInfo!,
+                  ExpansionTile(
+                    title: const Text(
+                      "Evidencia Carcinogenicidad",
+                      style: PopUpTextStyle.secondTitle,
                     ),
-                    subtitleTextStyle: PopUpTextStyle.subtitle,
+                    initiallyExpanded: true,
+                    children: [
+                      textEvidencia(agent.infoAnimales),
+                      textEvidencia(agent.infoHumanos),
+                    ],
                   ),
-                  ListTile(
-                    title: const Text("Volumen de publicación:"),
-                    titleTextStyle: PopUpTextStyle.secondTitle,
-                    subtitle: Text(agent.volumen == null
-                        ? "Sin información"
-                        : agent.volumen!),
-                    subtitleTextStyle: PopUpTextStyle.subtitle,
-                  ),
-                  ListTile(
-                    title: const Text("Año de publicación:"),
-                    titleTextStyle: PopUpTextStyle.secondTitle,
-                    subtitle: Text(
-                      agent.yearPub == null
-                          ? "Sin información"
-                          : agent.yearPub.toString(),
+                  ExpansionTile(
+                    title: const Text(
+                      "Descripción",
+                      style: PopUpTextStyle.secondTitle,
                     ),
-                    subtitleTextStyle: PopUpTextStyle.subtitle,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 10, left: 15, right: 15, bottom: 15),
+                        child: Text(
+                          agent.descInfo == null || agent.descInfo!.isEmpty
+                              ? "Sin información"
+                              : agent.descInfo!,
+                          style: PopUpTextStyle.content,
+                        ),
+                      ),
+                    ],
                   ),
-                  ListTile(
-                    title: const Text("Año de evaluación:"),
-                    titleTextStyle: PopUpTextStyle.secondTitle,
-                    subtitle: Text(
-                      agent.yearEv == null
-                          ? "Sin información"
-                          : agent.yearEv.toString(),
+                  ExpansionTile(
+                    title: const Text(
+                      "Publicación",
+                      style: PopUpTextStyle.secondTitle,
                     ),
-                    subtitleTextStyle: PopUpTextStyle.subtitle,
+                    children: [
+                      ListTile(
+                        title: const Text("Volumen de publicación:"),
+                        titleTextStyle: PopUpTextStyle.secondTitle,
+                        subtitle: Text(
+                            agent.volumen == null || agent.volumen!.isEmpty
+                                ? "Sin información"
+                                : agent.volumen!),
+                        subtitleTextStyle: PopUpTextStyle.subtitle,
+                      ),
+                      ListTile(
+                        title: const Text("Año de publicación:"),
+                        titleTextStyle: PopUpTextStyle.secondTitle,
+                        subtitle: Text(
+                          agent.yearPub == null
+                              ? "Sin información"
+                              : agent.yearPub.toString(),
+                        ),
+                        subtitleTextStyle: PopUpTextStyle.subtitle,
+                      ),
+                      ListTile(
+                        title: const Text("Año de evaluación:"),
+                        titleTextStyle: PopUpTextStyle.secondTitle,
+                        subtitle: Text(
+                          agent.yearEv == null
+                              ? "Sin información"
+                              : agent.yearEv.toString(),
+                        ),
+                        subtitleTextStyle: PopUpTextStyle.subtitle,
+                      ),
+                    ],
                   ),
                 ],
               ),
