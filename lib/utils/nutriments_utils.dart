@@ -1,12 +1,28 @@
 import "package:flutter/material.dart";
 import "package:openfoodfacts/openfoodfacts.dart";
 
-Widget nutrimentRow(BuildContext context, String title, double? serving,
-    double? grams, bool mg, bool kcal) {
+extension DoubleTrailing on double {
+  String toZeroString(int fix) {
+    if (this % 1 == 0) {
+      return toInt().toString();
+    } else {
+      return toStringAsFixed(fix);
+    }
+  }
+}
+
+Widget nutrimentRow(
+  BuildContext context,
+  String title,
+  double? serving,
+  double? grams,
+  bool mg, {
+  TextStyle? textStyle,
+}) {
   if (serving == null || grams == null) {
     return const SizedBox();
   }
-  double padding = 2;
+  double padding = 4;
   return Row(
     children: [
       Expanded(
@@ -17,6 +33,7 @@ Widget nutrimentRow(BuildContext context, String title, double? serving,
             title,
             overflow: TextOverflow.clip,
             maxLines: 1,
+            style: textStyle ?? const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
       ),
@@ -33,7 +50,7 @@ Widget nutrimentRow(BuildContext context, String title, double? serving,
           child: Padding(
             padding: EdgeInsets.all(padding),
             child: Text(
-              "${mg ? (serving * 1000).toStringAsFixed(2) : serving.toStringAsFixed(2)} ${kcal ? "kCal" : mg ? "mg" : "g"}",
+              mg ? (serving * 1000).toZeroString(2) : serving.toZeroString(2),
               overflow: TextOverflow.clip,
               maxLines: 1,
             ),
@@ -45,7 +62,7 @@ Widget nutrimentRow(BuildContext context, String title, double? serving,
           child: Padding(
             padding: EdgeInsets.all(padding),
             child: Text(
-              "${mg ? (grams * 1000).toStringAsFixed(1) : grams.toStringAsFixed(1)} ${kcal ? "kCal" : mg ? "mg" : "g"}",
+              mg ? (grams * 1000).toZeroString(1) : grams.toZeroString(1),
               overflow: TextOverflow.clip,
               maxLines: 1,
             ),
@@ -127,7 +144,7 @@ Container nutrimentsTable(BuildContext context, double ancho, Product product) {
         ),
         nutrimentRow(
           context,
-          "Energía",
+          "Energía (kCal)",
           product.nutriments!.getValue(
             Nutrient.energyKCal,
             PerSize.serving,
@@ -137,11 +154,10 @@ Container nutrimentsTable(BuildContext context, double ancho, Product product) {
             PerSize.oneHundredGrams,
           ),
           false,
-          true,
         ),
         nutrimentRow(
           context,
-          "Proteínas",
+          "Proteínas (g)",
           product.nutriments!.getValue(
             Nutrient.proteins,
             PerSize.serving,
@@ -151,11 +167,10 @@ Container nutrimentsTable(BuildContext context, double ancho, Product product) {
             PerSize.oneHundredGrams,
           ),
           false,
-          false,
         ),
         nutrimentRow(
           context,
-          "Grasas Totales",
+          "Grasas Totales (g)",
           product.nutriments!.getValue(
             Nutrient.fat,
             PerSize.serving,
@@ -165,11 +180,10 @@ Container nutrimentsTable(BuildContext context, double ancho, Product product) {
             PerSize.oneHundredGrams,
           ),
           false,
-          false,
         ),
         nutrimentRow(
           context,
-          "     Saturadas",
+          " - Saturadas (g)",
           product.nutriments!.getValue(
             Nutrient.saturatedFat,
             PerSize.serving,
@@ -179,11 +193,11 @@ Container nutrimentsTable(BuildContext context, double ancho, Product product) {
             PerSize.oneHundredGrams,
           ),
           false,
-          false,
+          textStyle: const TextStyle(fontWeight: FontWeight.normal),
         ),
         nutrimentRow(
           context,
-          "     Monoinsaturadas",
+          " - Monoinsaturadas (g)",
           product.nutriments!.getValue(
             Nutrient.monounsaturatedFat,
             PerSize.serving,
@@ -193,11 +207,11 @@ Container nutrimentsTable(BuildContext context, double ancho, Product product) {
             PerSize.oneHundredGrams,
           ),
           false,
-          false,
+          textStyle: const TextStyle(fontWeight: FontWeight.normal),
         ),
         nutrimentRow(
           context,
-          "     Poliinsaturadas",
+          " - Poliinsaturadas (g)",
           product.nutriments!.getValue(
             Nutrient.polyunsaturatedFat,
             PerSize.serving,
@@ -207,11 +221,11 @@ Container nutrimentsTable(BuildContext context, double ancho, Product product) {
             PerSize.oneHundredGrams,
           ),
           false,
-          false,
+          textStyle: const TextStyle(fontWeight: FontWeight.normal),
         ),
         nutrimentRow(
           context,
-          "     Trans",
+          " - Trans (g)",
           product.nutriments!.getValue(
             Nutrient.transFat,
             PerSize.serving,
@@ -221,11 +235,11 @@ Container nutrimentsTable(BuildContext context, double ancho, Product product) {
             PerSize.oneHundredGrams,
           ),
           false,
-          false,
+          textStyle: const TextStyle(fontWeight: FontWeight.normal),
         ),
         nutrimentRow(
           context,
-          "     Colesterol",
+          " - Colesterol (mg)",
           product.nutriments!.getValue(
             Nutrient.cholesterol,
             PerSize.serving,
@@ -235,11 +249,11 @@ Container nutrimentsTable(BuildContext context, double ancho, Product product) {
             PerSize.oneHundredGrams,
           ),
           true,
-          false,
+          textStyle: const TextStyle(fontWeight: FontWeight.normal),
         ),
         nutrimentRow(
           context,
-          "Hidratos de Carbono",
+          "Hidratos de Carbono (g)",
           product.nutriments!.getValue(
             Nutrient.carbohydrates,
             PerSize.serving,
@@ -249,11 +263,10 @@ Container nutrimentsTable(BuildContext context, double ancho, Product product) {
             PerSize.oneHundredGrams,
           ),
           false,
-          false,
         ),
         nutrimentRow(
           context,
-          "Azúcares Totales",
+          "Azúcares Totales (g)",
           product.nutriments!.getValue(
             Nutrient.sugars,
             PerSize.serving,
@@ -263,11 +276,10 @@ Container nutrimentsTable(BuildContext context, double ancho, Product product) {
             PerSize.oneHundredGrams,
           ),
           false,
-          false,
         ),
         nutrimentRow(
           context,
-          "Sodio",
+          "Sodio (g)",
           product.nutriments!.getValue(
             Nutrient.sodium,
             PerSize.serving,
@@ -277,7 +289,6 @@ Container nutrimentsTable(BuildContext context, double ancho, Product product) {
             PerSize.oneHundredGrams,
           ),
           true,
-          false,
         ),
       ],
     ),

@@ -8,6 +8,7 @@ import 'package:proyecto_ubb/pages/product_page/product_page.dart';
 import 'package:proyecto_ubb/services/custom_exceptions.dart';
 import 'package:proyecto_ubb/services/open_food_facts_service.dart';
 import 'package:proyecto_ubb/style/padding_style.dart';
+import 'package:proyecto_ubb/utils/string_utils.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

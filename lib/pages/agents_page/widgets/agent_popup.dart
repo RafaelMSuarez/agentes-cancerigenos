@@ -54,8 +54,34 @@ class AgentPopUp extends StatelessWidget {
                     ),
                     initiallyExpanded: true,
                     children: [
-                      textEvidencia(agent.infoAnimales),
-                      textEvidencia(agent.infoHumanos),
+                      agent.infoAnimales == null || agent.infoAnimales!.isEmpty
+                          ? const SizedBox()
+                          : Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 10, left: 15, right: 15, bottom: 15),
+                              child: RichText(
+                                text: TextSpan(
+                                  style: DefaultTextStyle.of(context)
+                                      .style
+                                      .merge(PopUpTextStyle.content),
+                                  children: textEvidencia(agent.infoAnimales),
+                                ),
+                              ),
+                            ),
+                      agent.infoHumanos == null || agent.infoHumanos!.isEmpty
+                          ? const SizedBox()
+                          : Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 10, left: 15, right: 15, bottom: 15),
+                              child: RichText(
+                                text: TextSpan(
+                                  style: DefaultTextStyle.of(context)
+                                      .style
+                                      .merge(PopUpTextStyle.content),
+                                  children: textEvidencia(agent.infoHumanos),
+                                ),
+                              ),
+                            ),
                     ],
                   ),
                   ExpansionTile(
@@ -64,16 +90,34 @@ class AgentPopUp extends StatelessWidget {
                       style: PopUpTextStyle.secondTitle,
                     ),
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            top: 10, left: 15, right: 15, bottom: 15),
-                        child: Text(
-                          agent.descInfo == null || agent.descInfo!.isEmpty
-                              ? "Sin información"
-                              : agent.descInfo!,
-                          style: PopUpTextStyle.content,
-                        ),
-                      ),
+                      agent.descInfo == null || agent.descInfo!.isEmpty
+                          ? const SizedBox()
+                          : Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 10, left: 15, right: 15, bottom: 15),
+                              child: RichText(
+                                text: TextSpan(
+                                  style: DefaultTextStyle.of(context)
+                                      .style
+                                      .merge(PopUpTextStyle.content),
+                                  children: textEvidencia(agent.descInfo),
+                                ),
+                              ),
+                            ),
+                      agent.addInfo == null || agent.addInfo!.isEmpty
+                          ? const SizedBox()
+                          : Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 15, right: 15, bottom: 15),
+                              child: RichText(
+                                text: TextSpan(
+                                  style: DefaultTextStyle.of(context)
+                                      .style
+                                      .merge(PopUpTextStyle.content),
+                                  children: textEvidencia(agent.addInfo),
+                                ),
+                              ),
+                            ),
                     ],
                   ),
                   ExpansionTile(

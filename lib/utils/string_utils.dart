@@ -8,37 +8,40 @@ String firstToUpperCase(String? string) {
   return string.replaceFirst(string[0], string[0].toUpperCase());
 }
 
-Padding textEvidencia(String? evidencia) {
-  if (evidencia == null || evidencia.isEmpty) {
-    return const Padding(
-      padding: EdgeInsets.zero,
-      child: SizedBox(),
+List<TextSpan> textEvidencia(String? texto) {
+  if (texto == null || texto.isEmpty) {
+    return [];
+  }
+
+  List<TextSpan> spans = [];
+  RegExp regex = RegExp(r'\*(.*?)\*');
+  int lastMatchEnd = 0;
+
+  for (final match in regex.allMatches(texto)) {
+    if (match.start > lastMatchEnd) {
+      spans.add(
+        TextSpan(
+          text: texto.substring(lastMatchEnd, match.start),
+        ),
+      );
+    }
+
+    spans.add(
+      TextSpan(
+        text: match.group(1),
+        style: PopUpTextStyle.content.copyWith(fontWeight: FontWeight.bold),
+      ),
+    );
+    lastMatchEnd = match.end;
+  }
+
+  if (lastMatchEnd < texto.length) {
+    spans.add(
+      TextSpan(
+        text: texto.substring(lastMatchEnd),
+      ),
     );
   }
-  List<String> listEv = evidencia.split(" ");
-  List<String> resto = listEv.getRange(3, listEv.length).toList();
-  return Padding(
-    padding: const EdgeInsets.only(top: 10, left: 15, right: 15, bottom: 15),
-    child: RichText(
-      text: TextSpan(
-          text: "${listEv[0]} ",
-          style: PopUpTextStyle.content.copyWith(fontWeight: FontWeight.bold),
-          children: [
-            TextSpan(
-              text: "${listEv[1]} ",
-              style:
-                  PopUpTextStyle.content.copyWith(fontWeight: FontWeight.bold),
-            ),
-            TextSpan(
-              text: "${listEv[2]} ",
-              style:
-                  PopUpTextStyle.content.copyWith(fontWeight: FontWeight.bold),
-            ),
-            TextSpan(
-              text: resto.join(" "),
-              style: PopUpTextStyle.content,
-            ),
-          ]),
-    ),
-  );
+
+  return spans;
 }
