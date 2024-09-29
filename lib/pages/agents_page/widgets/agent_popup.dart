@@ -40,14 +40,17 @@ class AgentPopUp extends StatelessWidget {
                   ListTile(
                     title: Text(agent.agent),
                     titleTextStyle: PopUpTextStyle.mainTitle,
+                    textColor: DefaultTextStyle.of(context).style.color,
                   ),
                   ListTile(
                     title: Text(grupos.elementAt(agent.group - 1)),
                     titleTextStyle: PopUpTextStyle.secondTitle,
+                    textColor: DefaultTextStyle.of(context).style.color,
                     subtitle: Text(gruposDesc.elementAt(agent.group - 1)),
                     subtitleTextStyle: PopUpTextStyle.subtitle,
                   ),
                   ExpansionTile(
+                    textColor: DefaultTextStyle.of(context).style.color,
                     title: const Text(
                       "Evidencia Carcinogenicidad",
                       style: PopUpTextStyle.secondTitle,
@@ -85,6 +88,7 @@ class AgentPopUp extends StatelessWidget {
                     ],
                   ),
                   ExpansionTile(
+                    textColor: DefaultTextStyle.of(context).style.color,
                     title: const Text(
                       "Descripción",
                       style: PopUpTextStyle.secondTitle,
@@ -121,12 +125,14 @@ class AgentPopUp extends StatelessWidget {
                     ],
                   ),
                   ExpansionTile(
+                    textColor: DefaultTextStyle.of(context).style.color,
                     title: const Text(
                       "Publicación",
                       style: PopUpTextStyle.secondTitle,
                     ),
                     children: [
                       ListTile(
+                        textColor: DefaultTextStyle.of(context).style.color,
                         title: const Text("Volumen de publicación:"),
                         titleTextStyle: PopUpTextStyle.secondTitle,
                         subtitle: Text(
@@ -136,6 +142,7 @@ class AgentPopUp extends StatelessWidget {
                         subtitleTextStyle: PopUpTextStyle.subtitle,
                       ),
                       ListTile(
+                        textColor: DefaultTextStyle.of(context).style.color,
                         title: const Text("Año de publicación:"),
                         titleTextStyle: PopUpTextStyle.secondTitle,
                         subtitle: Text(
@@ -146,6 +153,7 @@ class AgentPopUp extends StatelessWidget {
                         subtitleTextStyle: PopUpTextStyle.subtitle,
                       ),
                       ListTile(
+                        textColor: DefaultTextStyle.of(context).style.color,
                         title: const Text("Año de evaluación:"),
                         titleTextStyle: PopUpTextStyle.secondTitle,
                         subtitle: Text(

@@ -36,16 +36,21 @@ class Agent {
   /// Información adicional
   final String? addInfo;
 
-  Agent(
-      {this.pubChemId,
-      this.id,
-      required this.agent,
-      required this.group,
-      this.volumen,
-      this.yearPub,
-      this.yearEv,
-      this.descInfo,
-      this.infoHumanos,
-      this.infoAnimales,
-      this.addInfo});
+  /// Palabras claves utilizadas para relacionar con OpenFoodFacts
+  final String? tags;
+
+  Agent({
+    this.pubChemId,
+    this.id,
+    required this.agent,
+    required this.group,
+    this.volumen,
+    this.yearPub,
+    this.yearEv,
+    this.descInfo,
+    this.infoHumanos,
+    this.infoAnimales,
+    this.addInfo,
+    this.tags,
+  });
 }

@@ -14,3 +14,20 @@ String getNutriScoreImage(String score) {
       return "assets/nutriscore-not-applicable-new-en.png";
   }
 }
+
+String getNutriScoreDesc(String score) {
+  switch (score) {
+    case "a":
+      return "Muy buena calidad nutricional";
+    case "b":
+      return "Calidad nutricional buena";
+    case "c":
+      return "Calidad nutricional media";
+    case "d":
+      return "Calidad nutricional baja";
+    case "e":
+      return "Calidad nutricional mala";
+    default:
+      return "No Aplicable";
+  }
+}

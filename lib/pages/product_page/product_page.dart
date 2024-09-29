@@ -2,6 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:proyecto_ubb/models/agent_model.dart';
+import 'package:proyecto_ubb/pages/agents_page/widgets/agent_popup.dart';
+import 'package:proyecto_ubb/pages/product_page/widgets/agents_in_product_card.dart';
+import 'package:proyecto_ubb/services/firebase_service.dart';
 import 'package:proyecto_ubb/style/padding_style.dart';
 import 'package:proyecto_ubb/style/text_styles.dart';
 import 'package:proyecto_ubb/utils/nutriments_utils.dart';
@@ -30,6 +34,43 @@ class _ProductPageState extends State<ProductPage> {
     }
     return catsEsp.join(", ");
   }
+
+  List<Agent> agentes = [];
+
+  List<Agent> getAgentes(List<Agent> ags) {
+    List<String> cats = [];
+    List<String> adds = [];
+    List<String> catsE = [];
+
+    List<Agent> agents = [];
+    if (widget.product.categoriesTags != null) {
+      cats = widget.product.categoriesTags!;
+    }
+    if (widget.product.additives != null) {
+      adds = widget.product.additives!.names;
+    }
+
+    for (String cat in cats) {
+      catsE.add(cat.substring(3));
+    }
+
+    for (Agent ag in ags) {
+      print(catsE);
+      if (ag.tags != null) {
+        List<String> tags = ag.tags!.split(",");
+        for (String tag in tags) {
+          if (catsE.contains(tag.toLowerCase()) ||
+              adds.contains(tag.toLowerCase())) {
+            agents.add(ag);
+          }
+        }
+      }
+    }
+
+    return agents.toSet().toList();
+  }
+
+  final FirebaseService _firebaseService = FirebaseService();
 
   @override
   Widget build(BuildContext context) {
@@ -152,8 +193,9 @@ class _ProductPageState extends State<ProductPage> {
                           firstToUpperCase(widget.product.productName),
                           style: TitleTextStyle.mainTitle,
                         ),
-                        const SizedBox(
-                          height: 15,
+                        Text(
+                          firstToUpperCase(widget.product.getFirstBrand()),
+                          style: TitleTextStyle.subtitle,
                         ),
                         Text.rich(
                           TextSpan(
@@ -162,21 +204,28 @@ class _ProductPageState extends State<ProductPage> {
                                 text: "Cantidad neta: ",
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
-                              TextSpan(text: "${widget.product.quantity}")
+                              TextSpan(text: widget.product.quantity ?? "-")
                             ],
                           ),
                         ),
                         const SizedBox(
-                          height: 15,
+                          height: 25,
                         ),
-                        Center(
-                          child: Image.asset(
-                            fit: BoxFit.contain,
-                            width: ancho * 0.3,
-                            getNutriScoreImage(
-                                widget.product.nutriscore ?? "not"),
+                        Image.asset(
+                          fit: BoxFit.contain,
+                          width: ancho * 0.3,
+                          getNutriScoreImage(
+                              widget.product.nutriscore ?? "not"),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          getNutriScoreDesc(
+                            widget.product.nutriscore ?? "not",
                           ),
-                        ),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        )
                       ],
                     ),
                   ),
@@ -203,18 +252,76 @@ class _ProductPageState extends State<ProductPage> {
                   nutrimentsTable(context, ancho, widget.product),
                 ],
               ),
-              ExpansionTile(
-                childrenPadding: PaddingTheme.horizontal.copyWith(bottom: 15),
-                expandedAlignment: Alignment.centerLeft,
-                title: const Text("Agentes"),
-              ),
+              StreamBuilder<List<Agent>>(
+                  stream: _firebaseService.agentsStream,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState != ConnectionState.active) {
+                      return ExpansionTile(
+                        childrenPadding:
+                            PaddingTheme.horizontal.copyWith(bottom: 15),
+                        expandedAlignment: Alignment.centerLeft,
+                        title: const Text("Posibles Agentes"),
+                        children: const [
+                          Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        ],
+                      );
+                    }
+                    if (!snapshot.hasData) {
+                      return ExpansionTile(
+                        childrenPadding:
+                            PaddingTheme.horizontal.copyWith(bottom: 15),
+                        expandedAlignment: Alignment.centerLeft,
+                        title: const Text("Posibles Agentes"),
+                        children: const [
+                          Center(
+                            child: Text("No hay elementos"),
+                          )
+                        ],
+                      );
+                    }
+                    agentes = getAgentes(snapshot.data!);
+
+                    return ExpansionTile(
+                      childrenPadding:
+                          PaddingTheme.horizontal.copyWith(bottom: 15),
+                      expandedAlignment: Alignment.centerLeft,
+                      title: const Text("Posibles Agentes"),
+                      children: [
+                        ListView.builder(
+                          itemCount: agentes.length,
+                          shrinkWrap: true,
+                          physics: const ClampingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                              child: AgentInProductCard(agent: agentes[index]),
+                              onTap: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  showDragHandle: true,
+                                  builder: (context) {
+                                    return AgentPopUp(
+                                      agent: agentes[index],
+                                    );
+                                  },
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ],
+                    );
+                  }),
               ExpansionTile(
                 title: const Text("Ingredientes"),
                 childrenPadding: PaddingTheme.horizontal.copyWith(bottom: 15),
                 expandedAlignment: Alignment.centerLeft,
                 children: [
                   Text(
-                      "${widget.product.ingredientsTextInLanguages != null ? widget.product.ingredientsTextInLanguages![OpenFoodFactsLanguage.SPANISH] : ""}"),
+                    "${widget.product.ingredientsTextInLanguages != null ? widget.product.ingredientsTextInLanguages![OpenFoodFactsLanguage.SPANISH] : ""}",
+                  ),
                 ],
               ),
             ],

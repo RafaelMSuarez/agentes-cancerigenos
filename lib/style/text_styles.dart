@@ -7,6 +7,10 @@ abstract class TitleTextStyle {
   static const TextStyle secondTitle = TextStyle(
     fontSize: 20,
   );
+
+  static const TextStyle subtitle = TextStyle(
+    fontSize: 17,
+  );
 }
 
 abstract class CardTextStyle {

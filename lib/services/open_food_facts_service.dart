@@ -2,24 +2,23 @@ import 'package:openfoodfacts/openfoodfacts.dart';
 import 'package:proyecto_ubb/services/custom_exceptions.dart';
 
 final List<ProductField> fields = [
-  ProductField.BARCODE,
-  ProductField.NAME,
-  ProductField.QUANTITY,
-  ProductField.PACKAGING_QUANTITY,
-  ProductField.SERVING_SIZE,
-  ProductField.SERVING_QUANTITY,
-  ProductField.INGREDIENTS,
-  ProductField.INGREDIENTS_TEXT_IN_LANGUAGES,
-  ProductField.INGREDIENTS_TAGS,
   ProductField.ADDITIVES,
+  ProductField.BARCODE,
+  ProductField.BRANDS,
   ProductField.CATEGORIES,
   ProductField.CATEGORIES_TAGS,
-  ProductField.LABELS,
   ProductField.IMAGE_FRONT_URL,
-  ProductField.IMAGE_NUTRITION_URL,
-  ProductField.IMAGE_INGREDIENTS_URL,
+  ProductField.INGREDIENTS,
+  ProductField.INGREDIENTS_TAGS,
+  ProductField.INGREDIENTS_TEXT_IN_LANGUAGES,
+  ProductField.LABELS,
+  ProductField.NAME,
   ProductField.NUTRISCORE,
-  ProductField.NUTRIMENTS
+  ProductField.NUTRIMENTS,
+  ProductField.PACKAGING_QUANTITY,
+  ProductField.QUANTITY,
+  ProductField.SERVING_QUANTITY,
+  ProductField.SERVING_SIZE,
 ];
 
 Future<Product?> getProductBarcode(String barcode) async {
