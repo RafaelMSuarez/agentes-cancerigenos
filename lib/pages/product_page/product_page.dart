@@ -40,7 +40,7 @@ class _ProductPageState extends State<ProductPage> {
   List<Agent> getAgentes(List<Agent> ags) {
     List<String> cats = [];
     List<String> adds = [];
-    List<String> catsE = [];
+    List<String> ingr = [];
 
     List<Agent> agents = [];
     if (widget.product.categoriesTags != null) {
@@ -50,17 +50,41 @@ class _ProductPageState extends State<ProductPage> {
       adds = widget.product.additives!.names;
     }
 
-    for (String cat in cats) {
-      catsE.add(cat.substring(3));
+    // if (widget.product
+    //         .ingredientsTextInLanguages![OpenFoodFactsLanguage.SPANISH] !=
+    //     null) {
+    //   ingr = widget
+    //       .product.ingredientsTextInLanguages![OpenFoodFactsLanguage.SPANISH]!
+    //       .toLowerCase()
+    //       .trim()
+    //       .split(",");
+    // }
+
+    if (widget.product.ingredientsTags != null) {
+      ingr = widget.product.ingredientsTags!;
+    }
+    for (int i = 0; i < ingr.length; i++) {
+      ingr[i] = ingr[i].replaceFirst('en:', "").trim();
+    }
+    print(ingr);
+
+    for (int i = 0; i < cats.length; i++) {
+      cats[i] = cats[i].replaceFirst('en:', "").trim();
     }
 
     for (Agent ag in ags) {
-      print(catsE);
       if (ag.tags != null) {
         List<String> tags = ag.tags!.split(",");
+
         for (String tag in tags) {
-          if (catsE.contains(tag.toLowerCase()) ||
-              adds.contains(tag.toLowerCase())) {
+          if (cats.contains(tag.toLowerCase().trim())) {
+            agents.add(ag);
+          }
+          if (adds.contains(tag.toLowerCase().trim())) {
+            agents.add(ag);
+          }
+
+          if (ingr.contains(tag.toLowerCase().trim())) {
             agents.add(ag);
           }
         }
