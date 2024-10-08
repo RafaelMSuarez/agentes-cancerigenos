@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_ubb/models/agent_model.dart';
 import 'package:proyecto_ubb/pages/agents_page/agents_page.dart';
+import 'package:proyecto_ubb/pages/barcodes_missing_page/barcodes_missing_page.dart';
 import 'package:proyecto_ubb/pages/home_page/home_page.dart';
 import 'package:proyecto_ubb/pages/info_page/info_page.dart';
+import 'package:proyecto_ubb/services/firebase_service.dart';
 import 'package:proyecto_ubb/style/text_styles.dart';
 
 class MainScaffold extends StatefulWidget {
@@ -14,6 +17,7 @@ class MainScaffold extends StatefulWidget {
 class _MainScaffoldState extends State<MainScaffold> {
   int selectedIdex = 0;
   PageController pageviewController = PageController();
+  final _firebaseService = FirebaseService();
 
   String appBarTitle() {
     switch (selectedIdex) {
@@ -40,10 +44,30 @@ class _MainScaffoldState extends State<MainScaffold> {
           appBarTitle(),
           style: TitleTextStyle.mainTitle.copyWith(fontSize: 22),
         ),
+        actions: [
+          PopupMenuButton(
+            onSelected: (value) {
+              if (value == 0) {
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return const BarcodesMissingPage();
+                  },
+                ));
+              }
+            },
+            itemBuilder: (context) {
+              return [
+                const PopupMenuItem(
+                  value: 0,
+                  child: Text("Abrir códigos por editar"),
+                ),
+              ];
+            },
+          )
+        ],
       ),
       body: PageView(
         controller: pageviewController,
-        
         physics: const NeverScrollableScrollPhysics(),
         children: const [
           HomePage(),

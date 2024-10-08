@@ -5,6 +5,9 @@ class FirebaseService {
   static final CollectionReference coleccionAgentes =
       FirebaseFirestore.instance.collection("agentes");
 
+  static final CollectionReference coleccionBarcodes =
+      FirebaseFirestore.instance.collection("barcodes");
+
   List<Agent> _agentSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return Agent(
@@ -26,5 +29,35 @@ class FirebaseService {
 
   Stream<List<Agent>> get agentsStream {
     return coleccionAgentes.orderBy("agent").snapshots().map(_agentSnapshot);
+  }
+
+  Future<void> addBarcode(Barcode barcode) async {
+    if (barcode.barcode.isEmpty) {
+      return;
+    }
+    return await coleccionBarcodes.doc(barcode.id).set({
+      "barcode": barcode.barcode,
+      "nombre": barcode.nombre,
+    });
+  }
+
+  Future<void> deleteBarcode(Barcode barcode) async {
+    return await coleccionBarcodes.doc(barcode.id).delete();
+  }
+
+  List<Barcode> _barcodeSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map(
+      (doc) {
+        return Barcode(
+          id: doc.id,
+          barcode: doc.get("barcode"),
+          nombre: doc.get("nombre"),
+        );
+      },
+    ).toList();
+  }
+
+  Stream<List<Barcode>> get barcodeStream {
+    return coleccionBarcodes.snapshots().map(_barcodeSnapshot);
   }
 }

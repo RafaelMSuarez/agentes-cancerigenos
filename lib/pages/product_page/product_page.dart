@@ -35,9 +35,9 @@ class _ProductPageState extends State<ProductPage> {
     return catsEsp.join(", ");
   }
 
-  List<Agent> agentes = [];
+  // List<Agent> agentes = [];
 
-  List<Agent> getAgentes(List<Agent> ags) {
+  Future<List<Agent>> getAgentes(List<Agent> ags) async {
     List<String> cats = [];
     List<String> adds = [];
     List<String> ingr = [];
@@ -50,23 +50,12 @@ class _ProductPageState extends State<ProductPage> {
       adds = widget.product.additives!.names;
     }
 
-    // if (widget.product
-    //         .ingredientsTextInLanguages![OpenFoodFactsLanguage.SPANISH] !=
-    //     null) {
-    //   ingr = widget
-    //       .product.ingredientsTextInLanguages![OpenFoodFactsLanguage.SPANISH]!
-    //       .toLowerCase()
-    //       .trim()
-    //       .split(",");
-    // }
-
     if (widget.product.ingredientsTags != null) {
       ingr = widget.product.ingredientsTags!;
     }
     for (int i = 0; i < ingr.length; i++) {
       ingr[i] = ingr[i].replaceFirst('en:', "").trim();
     }
-    print(ingr);
 
     for (int i = 0; i < cats.length; i++) {
       cats[i] = cats[i].replaceFirst('en:', "").trim();
@@ -102,7 +91,30 @@ class _ProductPageState extends State<ProductPage> {
     double ancho = MediaQuery.sizeOf(context).width;
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          PopupMenuButton(
+            onSelected: (value) async {
+              if (value == 0) {
+                await _firebaseService.addBarcode(Barcode(
+                    barcode: widget.product.barcode ?? "",
+                    nombre: widget.product.productName));
+                if (!context.mounted) return;
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Código de barras agregado")));
+              }
+            },
+            itemBuilder: (context) {
+              return [
+                const PopupMenuItem(
+                  value: 0,
+                  child: Text("Agregar a \"por editar\""),
+                ),
+              ];
+            },
+          )
+        ],
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: PaddingTheme.horizontal,
@@ -214,11 +226,11 @@ class _ProductPageState extends State<ProductPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          firstToUpperCase(widget.product.productName),
+                          "${firstToUpperCase(widget.product.productName)} - ${firstToUpperCase(widget.product.getFirstBrand())}",
                           style: TitleTextStyle.mainTitle,
                         ),
                         Text(
-                          firstToUpperCase(widget.product.getFirstBrand()),
+                          firstToUpperCase(widget.product.genericName),
                           style: TitleTextStyle.subtitle,
                         ),
                         Text.rich(
@@ -281,6 +293,7 @@ class _ProductPageState extends State<ProductPage> {
                   builder: (context, snapshot) {
                     if (snapshot.connectionState != ConnectionState.active) {
                       return ExpansionTile(
+                        initiallyExpanded: true,
                         childrenPadding:
                             PaddingTheme.horizontal.copyWith(bottom: 15),
                         expandedAlignment: Alignment.centerLeft,
@@ -294,6 +307,7 @@ class _ProductPageState extends State<ProductPage> {
                     }
                     if (!snapshot.hasData) {
                       return ExpansionTile(
+                        initiallyExpanded: true,
                         childrenPadding:
                             PaddingTheme.horizontal.copyWith(bottom: 15),
                         expandedAlignment: Alignment.centerLeft,
@@ -305,37 +319,69 @@ class _ProductPageState extends State<ProductPage> {
                         ],
                       );
                     }
-                    agentes = getAgentes(snapshot.data!);
-
-                    return ExpansionTile(
-                      childrenPadding:
-                          PaddingTheme.horizontal.copyWith(bottom: 15),
-                      expandedAlignment: Alignment.centerLeft,
-                      title: const Text("Posibles Agentes"),
-                      children: [
-                        ListView.builder(
-                          itemCount: agentes.length,
-                          shrinkWrap: true,
-                          physics: const ClampingScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                              child: AgentInProductCard(agent: agentes[index]),
-                              onTap: () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  isScrollControlled: true,
-                                  showDragHandle: true,
-                                  builder: (context) {
-                                    return AgentPopUp(
-                                      agent: agentes[index],
+                    return FutureBuilder(
+                      future: getAgentes(snapshot.data!),
+                      builder: (context, agentes) {
+                        if (agentes.connectionState != ConnectionState.done) {
+                          return ExpansionTile(
+                            initiallyExpanded: true,
+                            childrenPadding:
+                                PaddingTheme.horizontal.copyWith(bottom: 15),
+                            expandedAlignment: Alignment.centerLeft,
+                            title: const Text("Posibles Agentes"),
+                            children: const [
+                              Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            ],
+                          );
+                        }
+                        if (agentes.data == null || agentes.data!.isEmpty) {
+                          return ExpansionTile(
+                            initiallyExpanded: true,
+                            childrenPadding:
+                                PaddingTheme.horizontal.copyWith(bottom: 15),
+                            expandedAlignment: Alignment.centerLeft,
+                            title: const Text("Posibles Agentes"),
+                            children: const [
+                              Center(
+                                child: Text("No hay elementos :)"),
+                              )
+                            ],
+                          );
+                        }
+                        return ExpansionTile(
+                          childrenPadding:
+                              PaddingTheme.horizontal.copyWith(bottom: 15),
+                          expandedAlignment: Alignment.centerLeft,
+                          title: const Text("Posibles Agentes"),
+                          children: [
+                            ListView.builder(
+                              itemCount: agentes.data!.length,
+                              shrinkWrap: true,
+                              physics: const ClampingScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                return InkWell(
+                                  child: AgentInProductCard(
+                                      agent: agentes.data![index]),
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      isScrollControlled: true,
+                                      showDragHandle: true,
+                                      builder: (context) {
+                                        return AgentPopUp(
+                                          agent: agentes.data![index],
+                                        );
+                                      },
                                     );
                                   },
                                 );
                               },
-                            );
-                          },
-                        ),
-                      ],
+                            ),
+                          ],
+                        );
+                      },
                     );
                   }),
               ExpansionTile(

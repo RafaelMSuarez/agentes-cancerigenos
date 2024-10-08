@@ -54,3 +54,15 @@ class Agent {
     this.tags,
   });
 }
+
+class Barcode {
+  String? id;
+  String barcode;
+  String? nombre;
+
+  Barcode({
+    this.id,
+    required this.barcode,
+    required this.nombre,
+  });
+}

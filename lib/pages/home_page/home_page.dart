@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
+import 'package:proyecto_ubb/models/agent_model.dart';
 import 'package:proyecto_ubb/models/product_model.dart';
 import 'package:proyecto_ubb/pages/home_page/widgets/product_card.dart';
 import 'package:proyecto_ubb/pages/product_page/product_page.dart';
 import 'package:proyecto_ubb/services/custom_exceptions.dart';
+import 'package:proyecto_ubb/services/firebase_service.dart';
 import 'package:proyecto_ubb/services/open_food_facts_service.dart';
 import 'package:proyecto_ubb/style/padding_style.dart';
+import 'package:proyecto_ubb/utils/custom_cpi.dart';
 import 'package:proyecto_ubb/utils/string_utils.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,6 +26,7 @@ class _HomePageState extends State<HomePage> {
   String _scanBarcode = "";
   String? searchQuery;
   late Future<List<Product>?> _products;
+  final _firebaseService = FirebaseService();
 
   bool loading = false;
 
@@ -83,6 +87,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   onSubmitted: (value) {
                     setState(() {
+                      searchQuery = value;
                       _products = searchProductsByName(value.trim());
                     });
                   },
@@ -95,37 +100,6 @@ class _HomePageState extends State<HomePage> {
                     setState(() {
                       loading = true;
                     });
-                    // await getProductBarcode("8410109109832").then((value) {
-                    //   singleProduct = value;
-                    //   if (!context.mounted) return;
-                    //   Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //       builder: (context) {
-                    //         return ProductPage(
-                    //           product: singleProduct!,
-                    //         );
-                    //       },
-                    //     ),
-                    //   );
-                    //   setState(() {
-                    //     loading = false;
-                    //   });
-                    // }).catchError(
-                    //   (e) {
-                    //     setState(() {
-                    //       loading = false;
-                    //     });
-                    //     if (e is NoProductFoundException) {
-                    //       if (!context.mounted) return;
-                    //       ScaffoldMessenger.of(context).showSnackBar(
-                    //         const SnackBar(
-                    //           content: Text("Producto no encontrado."),
-                    //         ),
-                    //       );
-                    //     }
-                    //   },
-                    // );
                     await scanBarcodeNormal().then(
                       (value) async {
                         if (_scanBarcode == "-1") {
@@ -162,6 +136,9 @@ class _HomePageState extends State<HomePage> {
                             });
                             if (e is NoProductFoundException) {
                               if (!context.mounted) return;
+                              _firebaseService.addBarcode(
+                                Barcode(barcode: _scanBarcode, nombre: null),
+                              );
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text("Producto no encontrado."),
@@ -219,13 +196,17 @@ class _HomePageState extends State<HomePage> {
                                     );
                                   },
                                 )
-                          : const Center(
-                              child: CircularProgressIndicator(),
+                          : Center(
+                              child: CustomCpi(
+                                mensaje: "Buscando ${searchQuery ?? ""}",
+                              ),
                             ),
                     );
                   } else {
-                    return const Center(
-                      child: CircularProgressIndicator(),
+                    return Center(
+                      child: CustomCpi(
+                        mensaje: "Buscando ${searchQuery ?? ""}",
+                      ),
                     );
                   }
                 }),

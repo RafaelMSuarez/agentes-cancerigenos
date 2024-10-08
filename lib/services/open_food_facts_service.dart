@@ -13,6 +13,7 @@ final List<ProductField> fields = [
   ProductField.INGREDIENTS_TEXT_IN_LANGUAGES,
   ProductField.LABELS,
   ProductField.NAME,
+  ProductField.GENERIC_NAME,
   ProductField.NUTRISCORE,
   ProductField.NUTRIMENTS,
   ProductField.PACKAGING_QUANTITY,
