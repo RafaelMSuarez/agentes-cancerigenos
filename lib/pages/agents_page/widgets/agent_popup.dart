@@ -3,6 +3,7 @@ import 'package:proyecto_ubb/models/agent_model.dart';
 import 'package:proyecto_ubb/style/padding_style.dart';
 import 'package:proyecto_ubb/style/text_styles.dart';
 import 'package:proyecto_ubb/utils/string_utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AgentPopUp extends StatelessWidget {
   final Agent agent;
@@ -127,41 +128,27 @@ class AgentPopUp extends StatelessWidget {
                   ExpansionTile(
                     textColor: DefaultTextStyle.of(context).style.color,
                     title: const Text(
-                      "Publicación",
+                      "Fuentes de Información",
                       style: PopUpTextStyle.secondTitle,
                     ),
                     children: [
                       ListTile(
                         textColor: DefaultTextStyle.of(context).style.color,
-                        title: const Text("Volumen de publicación:"),
+                        title: const Text("Publicación IARC"),
                         titleTextStyle: PopUpTextStyle.secondTitle,
-                        subtitle: Text(
-                            agent.volumen == null || agent.volumen!.isEmpty
-                                ? "Sin información"
-                                : agent.volumen!),
                         subtitleTextStyle: PopUpTextStyle.subtitle,
-                      ),
-                      ListTile(
-                        textColor: DefaultTextStyle.of(context).style.color,
-                        title: const Text("Año de publicación:"),
-                        titleTextStyle: PopUpTextStyle.secondTitle,
-                        subtitle: Text(
-                          agent.yearPub == null
-                              ? "Sin información"
-                              : agent.yearPub.toString(),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Volumen: ${agent.volumen}"),
+                            Text("Año de publicación: ${agent.yearPub}"),
+                            Text("Año de evaluación: ${agent.yearEv}"),
+                          ],
                         ),
-                        subtitleTextStyle: PopUpTextStyle.subtitle,
-                      ),
-                      ListTile(
-                        textColor: DefaultTextStyle.of(context).style.color,
-                        title: const Text("Año de evaluación:"),
-                        titleTextStyle: PopUpTextStyle.secondTitle,
-                        subtitle: Text(
-                          agent.yearEv == null
-                              ? "Sin información"
-                              : agent.yearEv.toString(),
-                        ),
-                        subtitleTextStyle: PopUpTextStyle.subtitle,
+                        trailing: const Icon(Icons.arrow_forward),
+                        onTap: () {
+                          iarcWebView(context, agent.volumen);
+                        },
                       ),
                     ],
                   ),
@@ -173,4 +160,46 @@ class AgentPopUp extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<void> iarcWebView(BuildContext context, String? volumen) async {
+  Uri url;
+  if (volumen == null) return;
+
+  List<String> volumenes = volumen.split(",");
+  if (volumenes.last.split(" ").contains("Sup")) {
+    url = Uri.parse(
+        "https://publications.iarc.who.int/Advanced-Search?q=${volumenes.last.split(" ").last}&category%5B8%5D=on&sort_by=year_desc&limit=20");
+  } else {
+    url = Uri.parse(
+        "https://publications.iarc.who.int/Advanced-Search?q=${volumenes.last}&category%5B7%5D=on&sort_by=year_desc&limit=20");
+  }
+
+  return await showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text("¿Abrir el navegador?"),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text("Cerrar"),
+          ),
+          FilledButton(
+            onPressed: () async {
+              await launchUrl(url).then(
+                (value) {
+                  if (!context.mounted) return;
+                  Navigator.pop(context);
+                },
+              );
+            },
+            child: const Text("Abrir"),
+          )
+        ],
+      );
+    },
+  );
 }
