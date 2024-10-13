@@ -97,9 +97,6 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.only(left: 10),
                 child: IconButton(
                   onPressed: () async {
-                    setState(() {
-                      loading = true;
-                    });
                     await scanBarcodeNormal().then(
                       (value) async {
                         if (_scanBarcode == "-1") {
@@ -198,7 +195,8 @@ class _HomePageState extends State<HomePage> {
                                 )
                           : Center(
                               child: CustomCpi(
-                                mensaje: "Buscando ${searchQuery ?? ""}",
+                                mensaje:
+                                    "Buscando ${searchQuery ?? "producto"}",
                               ),
                             ),
                     );

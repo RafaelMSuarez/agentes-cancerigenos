@@ -12,19 +12,6 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double alto = MediaQuery.of(context).size.height;
-    // double ancho = MediaQuery.of(context).size.width;
-
-    // String elementos() {
-    //   if (product.agents == null || product.agents!.isEmpty) {
-    //     return "0 Elementos encontrados";
-    //   }
-
-    //   if (product.agents!.length > 1) {
-    //     return "${product.agents!.length} Elementos encontrados";
-    //   }
-    //   return "1 Elemento encontrado";
-    // }
-
     return SizedBox(
       height: alto * 0.12,
       child: Row(
@@ -80,7 +67,7 @@ class ProductCard extends StatelessWidget {
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );

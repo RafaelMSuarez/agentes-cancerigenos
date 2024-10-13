@@ -17,7 +17,6 @@ class MainScaffold extends StatefulWidget {
 class _MainScaffoldState extends State<MainScaffold> {
   int selectedIdex = 0;
   PageController pageviewController = PageController();
-  final _firebaseService = FirebaseService();
 
   String appBarTitle() {
     switch (selectedIdex) {
@@ -26,7 +25,7 @@ class _MainScaffoldState extends State<MainScaffold> {
       case 1:
         return "Busque un agente";
       case 2:
-        return "Información";
+        return "Preguntas Frecuentes";
       default:
         return "";
     }

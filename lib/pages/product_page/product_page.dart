@@ -231,7 +231,12 @@ class _ProductPageState extends State<ProductPage> {
                         ),
                         Text(
                           firstToUpperCase(widget.product.genericName),
-                          style: TitleTextStyle.subtitle,
+                          // style: TitleTextStyle.subtitle,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(
+                          height: 10,
                         ),
                         Text.rich(
                           TextSpan(
@@ -244,8 +249,9 @@ class _ProductPageState extends State<ProductPage> {
                             ],
                           ),
                         ),
+                        const Divider(),
                         const SizedBox(
-                          height: 25,
+                          height: 15,
                         ),
                         Image.asset(
                           fit: BoxFit.contain,

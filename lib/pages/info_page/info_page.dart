@@ -25,6 +25,24 @@ class _InfoPageState extends State<InfoPage> {
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 10),
                   child: Text(
+                    "Sobre la aplicación",
+                    style: TitleTextStyle.secondTitle,
+                  ),
+                ),
+                ListTile(
+                  title: const Text("¿Como utilizar esta aplicación?"),
+                  trailing: const Icon(Icons.arrow_forward),
+                  onTap: () {},
+                ),
+                ListTile(
+                  title: const Text("¿Quién hizo esta aplicación?"),
+                  trailing: const Icon(Icons.arrow_forward),
+                  onTap: () {},
+                ),
+                const Divider(),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Text(
                     "Agentes Carcinogénicos",
                     style: TitleTextStyle.secondTitle,
                   ),
