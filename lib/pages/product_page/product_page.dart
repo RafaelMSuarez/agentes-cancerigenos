@@ -35,8 +35,6 @@ class _ProductPageState extends State<ProductPage> {
     return catsEsp.join(", ");
   }
 
-  // List<Agent> agentes = [];
-
   Future<List<Agent>> getAgentes(List<Agent> ags) async {
     List<String> cats = [];
     List<String> adds = [];
@@ -121,7 +119,6 @@ class _ProductPageState extends State<ProductPage> {
           child: Column(
             children: [
               Row(
-                // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
                     child: Container(
@@ -231,7 +228,6 @@ class _ProductPageState extends State<ProductPage> {
                         ),
                         Text(
                           firstToUpperCase(widget.product.genericName),
-                          // style: TitleTextStyle.subtitle,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),

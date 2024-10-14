@@ -9,7 +9,6 @@ class AgentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double alto = MediaQuery.of(context).size.height;
-    // double ancho = MediaQuery.of(context).size.width;
 
     return SizedBox(
       height: alto * 0.08,

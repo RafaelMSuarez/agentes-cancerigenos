@@ -1,27 +1,28 @@
 class Agent {
-  // Id documento
+  /// Id documento
   final String? id;
 
-  // PubChem ID
+  /// PubChem ID
   final int? pubChemId;
-  // Nombre del agente
+
+  /// Nombre del agente
   final String agent;
 
-  // Grupo al que pertenece
+  /// Grupo al que pertenece
+  /// 1 -> g1
+  /// 2 -> g2a
+  /// 3 -> g2b
+  /// 4 -> g3
 
   final int group;
-  // 1 -> g1
-  // 2 -> g2a
-  // 3 -> g2b
-  // 4 -> g3
 
-  // Volumen en el que sale
+  /// Volumen en el que sale
   final String? volumen;
 
-  // Año de publicación
+  /// Año de publicación
   final int? yearPub;
 
-  // Año de evaluación
+  /// Año de evaluación
   final int? yearEv;
 
   /// Descripción del agente

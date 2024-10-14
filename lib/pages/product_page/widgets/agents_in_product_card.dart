@@ -15,9 +15,6 @@ class AgentInProductCard extends StatelessWidget {
       "G3",
     ];
 
-    // double alto = MediaQuery.of(context).size.height;
-    // double ancho = MediaQuery.of(context).size.width;
-
     return ListTile(
       contentPadding: EdgeInsets.zero,
       leading: CircleAvatar(

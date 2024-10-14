@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:openfoodfacts/openfoodfacts.dart';
 import 'package:proyecto_ubb/models/agent_model.dart';
-import 'package:proyecto_ubb/models/product_model.dart';
 import 'package:proyecto_ubb/pages/home_page/widgets/product_card.dart';
 import 'package:proyecto_ubb/pages/product_page/product_page.dart';
 import 'package:proyecto_ubb/services/custom_exceptions.dart';
@@ -11,7 +10,6 @@ import 'package:proyecto_ubb/services/firebase_service.dart';
 import 'package:proyecto_ubb/services/open_food_facts_service.dart';
 import 'package:proyecto_ubb/style/padding_style.dart';
 import 'package:proyecto_ubb/utils/custom_cpi.dart';
-import 'package:proyecto_ubb/utils/string_utils.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -35,7 +33,6 @@ class _HomePageState extends State<HomePage> {
     try {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
           '#ff6666', 'Cancel', true, ScanMode.BARCODE);
-      // print(barcodeScanRes);
     } on PlatformException {
       barcodeScanRes = 'Failed to get platform version.';
     }
@@ -55,7 +52,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     double alto = MediaQuery.of(context).size.height;
-    // double ancho = MediaQuery.of(context).size.width;
     return Padding(
       padding: PaddingTheme.allPage,
       child: Column(
