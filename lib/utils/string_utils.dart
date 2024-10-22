@@ -21,8 +21,8 @@ List<TextSpan> textEvidencia(String? texto) {
     if (match.start > lastMatchEnd) {
       spans.add(
         TextSpan(
-          text: texto.substring(lastMatchEnd, match.start),
-        ),
+            text: texto.substring(lastMatchEnd, match.start),
+            style: PopUpTextStyle.content),
       );
     }
 

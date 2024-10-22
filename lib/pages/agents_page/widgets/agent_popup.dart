@@ -3,6 +3,7 @@ import 'package:proyecto_ubb/models/agent_model.dart';
 import 'package:proyecto_ubb/style/padding_style.dart';
 import 'package:proyecto_ubb/style/text_styles.dart';
 import 'package:proyecto_ubb/utils/string_utils.dart';
+import 'package:proyecto_ubb/utils/url_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AgentPopUp extends StatelessWidget {
@@ -22,7 +23,7 @@ class AgentPopUp extends StatelessWidget {
       "Carcinogénico para los humanos",
       "Probablemente carcinogénico para humanos",
       "Posiblemente carcinogénico para humanos",
-      "No es carcinogénico para humanos",
+      "No es clasificable como carcinogénico para humanos",
     ];
 
     double alto = MediaQuery.of(context).size.height;
@@ -57,6 +58,7 @@ class AgentPopUp extends StatelessWidget {
                       style: PopUpTextStyle.secondTitle,
                     ),
                     initiallyExpanded: true,
+                    expandedCrossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       agent.infoAnimales == null || agent.infoAnimales!.isEmpty
                           ? const SizedBox()
@@ -94,6 +96,7 @@ class AgentPopUp extends StatelessWidget {
                       "Descripción",
                       style: PopUpTextStyle.secondTitle,
                     ),
+                    expandedCrossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       agent.descInfo == null || agent.descInfo!.isEmpty
                           ? const SizedBox()
@@ -131,6 +134,7 @@ class AgentPopUp extends StatelessWidget {
                       "Fuentes de Información",
                       style: PopUpTextStyle.secondTitle,
                     ),
+                    expandedCrossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ListTile(
                         textColor: DefaultTextStyle.of(context).style.color,
@@ -160,46 +164,4 @@ class AgentPopUp extends StatelessWidget {
       ),
     );
   }
-}
-
-Future<void> iarcWebView(BuildContext context, String? volumen) async {
-  Uri url;
-  if (volumen == null) return;
-
-  List<String> volumenes = volumen.split(",");
-  if (volumenes.last.split(" ").contains("Sup")) {
-    url = Uri.parse(
-        "https://publications.iarc.who.int/Advanced-Search?q=${volumenes.last.split(" ").last}&category%5B8%5D=on&sort_by=year_desc&limit=20");
-  } else {
-    url = Uri.parse(
-        "https://publications.iarc.who.int/Advanced-Search?q=${volumenes.last}&category%5B7%5D=on&sort_by=year_desc&limit=20");
-  }
-
-  return await showDialog(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        title: const Text("¿Abrir el navegador?"),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text("Cerrar"),
-          ),
-          FilledButton(
-            onPressed: () async {
-              await launchUrl(url).then(
-                (value) {
-                  if (!context.mounted) return;
-                  Navigator.pop(context);
-                },
-              );
-            },
-            child: const Text("Abrir"),
-          )
-        ],
-      );
-    },
-  );
 }

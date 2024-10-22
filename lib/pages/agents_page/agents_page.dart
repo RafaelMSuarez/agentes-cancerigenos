@@ -25,7 +25,7 @@ class _AgentsPageState extends State<AgentsPage> {
     "Carcinogénico para humanos",
     "Probable carcinogénico para humanos",
     "Posible carcinogénico para humanos",
-    "No es carcinogénico para humanos"
+    "No es clasificable como carcinogénico para humanos"
   ];
 
   List<Agent> agentSort(List<Agent> agents) {

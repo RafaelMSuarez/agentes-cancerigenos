@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:proyecto_ubb/pages/info_page/widgets/info_popups/como_se_clasifica.dart';
+import 'package:proyecto_ubb/pages/info_page/widgets/info_popups/como_utilizar.dart';
+import 'package:proyecto_ubb/pages/info_page/widgets/info_popups/grupos_agentes.dart';
+import 'package:proyecto_ubb/pages/info_page/widgets/info_popups/iarc.dart';
+import 'package:proyecto_ubb/pages/info_page/widgets/info_popups/origen_informacion.dart';
+import 'package:proyecto_ubb/pages/info_page/widgets/info_popups/que_es_agente.dart';
+import 'package:proyecto_ubb/pages/info_page/widgets/info_popups/quien_hizo_app.dart';
 import 'package:proyecto_ubb/style/padding_style.dart';
 import 'package:proyecto_ubb/style/text_styles.dart';
 
@@ -30,12 +37,30 @@ class _InfoPageState extends State<InfoPage> {
                 ListTile(
                   title: const Text("¿Como utilizar esta aplicación?"),
                   trailing: const Icon(Icons.arrow_forward),
-                  onTap: () {},
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      showDragHandle: true,
+                      builder: (context) {
+                        return const ComoUtilizarPopUp();
+                      },
+                    );
+                  },
                 ),
                 ListTile(
                   title: const Text("¿Quién hizo esta aplicación?"),
                   trailing: const Icon(Icons.arrow_forward),
-                  onTap: () {},
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      showDragHandle: true,
+                      builder: (context) {
+                        return const QuienHizoAppPopUp();
+                      },
+                    );
+                  },
                 ),
                 const Divider(),
                 const Padding(
@@ -48,27 +73,72 @@ class _InfoPageState extends State<InfoPage> {
                 ListTile(
                   title: const Text("¿Qué es un agente carcinogénico?"),
                   trailing: const Icon(Icons.arrow_forward),
-                  onTap: () {},
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      showDragHandle: true,
+                      builder: (context) {
+                        return const QueEsAgentePopUp();
+                      },
+                    );
+                  },
                 ),
                 ListTile(
                   title: const Text("¿De dónde proviene la información?"),
                   trailing: const Icon(Icons.arrow_forward),
-                  onTap: () {},
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      showDragHandle: true,
+                      builder: (context) {
+                        return const OrigenInformacionPopUp();
+                      },
+                    );
+                  },
                 ),
                 ListTile(
-                  title: const Text("Qué es IARC?"),
+                  title: const Text("¿Qué es IARC?"),
                   trailing: const Icon(Icons.arrow_forward),
-                  onTap: () {},
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      showDragHandle: true,
+                      builder: (context) {
+                        return const QueEsIARCPopUp();
+                      },
+                    );
+                  },
                 ),
                 ListTile(
                   title: const Text("¿Qué significan los grupos de agentes?"),
                   trailing: const Icon(Icons.arrow_forward),
-                  onTap: () {},
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      showDragHandle: true,
+                      builder: (context) {
+                        return const GruposAgentesPopUp();
+                      },
+                    );
+                  },
                 ),
                 ListTile(
                   title: const Text("¿Cómo se realiza la clasificación?"),
                   trailing: const Icon(Icons.arrow_forward),
-                  onTap: () {},
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      showDragHandle: true,
+                      builder: (context) {
+                        return const ComoSeClasificaPopUp();
+                      },
+                    );
+                  },
                 ),
                 const Divider(),
                 const Padding(
@@ -79,7 +149,7 @@ class _InfoPageState extends State<InfoPage> {
                   ),
                 ),
                 ListTile(
-                  title: const Text("Qué es OpenFoodFacts?"),
+                  title: const Text("¿Qué es OpenFoodFacts?"),
                   trailing: const Icon(Icons.arrow_forward),
                   onTap: () {},
                 ),
