@@ -129,9 +129,7 @@ class _HomePageState extends State<HomePage> {
                             });
                             if (e is NoProductFoundException) {
                               if (!context.mounted) return;
-                              _firebaseService.addBarcode(
-                                Barcode(barcode: _scanBarcode, nombre: null),
-                              );
+
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text("Producto no encontrado."),

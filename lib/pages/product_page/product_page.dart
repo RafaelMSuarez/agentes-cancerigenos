@@ -94,9 +94,6 @@ class _ProductPageState extends State<ProductPage> {
           PopupMenuButton(
             onSelected: (value) async {
               if (value == 0) {
-                await _firebaseService.addBarcode(Barcode(
-                    barcode: widget.product.barcode ?? "",
-                    nombre: widget.product.productName));
                 if (!context.mounted) return;
                 ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text("Código de barras agregado")));
