@@ -4,7 +4,6 @@ import 'package:proyecto_ubb/style/padding_style.dart';
 import 'package:proyecto_ubb/style/text_styles.dart';
 import 'package:proyecto_ubb/utils/string_utils.dart';
 import 'package:proyecto_ubb/utils/url_utils.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class AgentPopUp extends StatelessWidget {
   final Agent agent;

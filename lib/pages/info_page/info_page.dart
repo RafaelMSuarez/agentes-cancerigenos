@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:proyecto_ubb/pages/info_page/widgets/info_popups/como_se_clasifica.dart';
 import 'package:proyecto_ubb/pages/info_page/widgets/info_popups/como_utilizar.dart';
+import 'package:proyecto_ubb/pages/info_page/widgets/info_popups/fiabilidad_openfood.dart';
 import 'package:proyecto_ubb/pages/info_page/widgets/info_popups/grupos_agentes.dart';
 import 'package:proyecto_ubb/pages/info_page/widgets/info_popups/iarc.dart';
+import 'package:proyecto_ubb/pages/info_page/widgets/info_popups/nutriscore.dart';
+import 'package:proyecto_ubb/pages/info_page/widgets/info_popups/openfoodfacts.dart';
 import 'package:proyecto_ubb/pages/info_page/widgets/info_popups/origen_informacion.dart';
 import 'package:proyecto_ubb/pages/info_page/widgets/info_popups/que_es_agente.dart';
 import 'package:proyecto_ubb/pages/info_page/widgets/info_popups/quien_hizo_app.dart';
@@ -151,17 +154,44 @@ class _InfoPageState extends State<InfoPage> {
                 ListTile(
                   title: const Text("¿Qué es OpenFoodFacts?"),
                   trailing: const Icon(Icons.arrow_forward),
-                  onTap: () {},
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      showDragHandle: true,
+                      builder: (context) {
+                        return const OpenFoodFactsPopUp();
+                      },
+                    );
+                  },
                 ),
                 ListTile(
                   title: const Text("¿Qué es NutriScore?"),
                   trailing: const Icon(Icons.arrow_forward),
-                  onTap: () {},
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      showDragHandle: true,
+                      builder: (context) {
+                        return const NutriScorePopUp();
+                      },
+                    );
+                  },
                 ),
                 ListTile(
                   title: const Text("¿Qué tan fiable es la información?"),
                   trailing: const Icon(Icons.arrow_forward),
-                  onTap: () {},
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      showDragHandle: true,
+                      builder: (context) {
+                        return const FiabilidadPopUp();
+                      },
+                    );
+                  },
                 ),
               ],
             ),
