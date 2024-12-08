@@ -38,7 +38,7 @@ class _InfoPageState extends State<InfoPage> {
                   ),
                 ),
                 ListTile(
-                  title: const Text("¿Como utilizar esta aplicación?"),
+                  title: const Text("¿Cómo utilizar esta aplicación?"),
                   trailing: const Icon(Icons.arrow_forward),
                   onTap: () {
                     showModalBottomSheet(
