@@ -89,27 +89,7 @@ class _ProductPageState extends State<ProductPage> {
     double ancho = MediaQuery.sizeOf(context).width;
 
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          PopupMenuButton(
-            onSelected: (value) async {
-              if (value == 0) {
-                if (!context.mounted) return;
-                ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Código de barras agregado")));
-              }
-            },
-            itemBuilder: (context) {
-              return [
-                const PopupMenuItem(
-                  value: 0,
-                  child: Text("Agregar a \"por editar\""),
-                ),
-              ];
-            },
-          )
-        ],
-      ),
+      appBar: AppBar(),
       body: SingleChildScrollView(
         child: Padding(
           padding: PaddingTheme.horizontal,
